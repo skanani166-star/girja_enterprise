@@ -46,7 +46,7 @@ export default function ProductsContent() {
             ALL PRODUCTS
           </h1>
           <p className="text-gray-500 text-base max-w-xl">
-            Browse our full range of corporate merchandise. Click any product to
+            Browse our full range of corporate products. Click any product to
             see details, pricing, and customization options.
           </p>
         </div>

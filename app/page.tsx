@@ -77,7 +77,7 @@ export default function HomePage() {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 border border-orange-500/30 bg-orange-500/5 rounded-full px-4 py-1.5 text-orange-400 text-sm mb-8">
               <span className="w-2 h-2 bg-orange-400 rounded-full animate-pulse" />
-              India's Premier Corporate Merchandise Manufacturer
+              India's Premier Corporate Product Catalog
             </div>
 
             <h1 className="font-display text-7xl sm:text-8xl lg:text-9xl text-white leading-none tracking-tight mb-6">
@@ -255,7 +255,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-14">
             <p className="text-orange-400 text-sm uppercase tracking-widest font-semibold mb-2">
-              Why BrandForge
+              Why Girja Enterprise Catalog
             </p>
             <h2 className="font-display text-5xl text-white">
               QUALITY YOU CAN COUNT ON
@@ -321,7 +321,7 @@ export default function HomePage() {
               {
                 name: "Rahul Mehta",
                 role: "HR Manager, TechCorp India",
-                text: "BrandForge delivered 2000 polo t-shirts for our annual meet. Quality was top-notch and delivery was on time. Will order again!",
+                text: "Girja Enterprise delivered 2000 polo t-shirts for our annual meet. Quality was top-notch and delivery was on time. Will order again!",
                 rating: 5,
               },
               {
@@ -378,13 +378,14 @@ export default function HomePage() {
                 About Us
               </p>
               <h2 className="font-display text-6xl text-white leading-none mb-6">
-                FORGING BRANDS
+                BUILDING BRANDS
                 <br />
                 <span className="text-gradient">SINCE 2012</span>
               </h2>
               <p className="text-gray-400 text-base leading-relaxed mb-5">
-                BrandForge is a Surat-based manufacturer specialising in custom
-                corporate merchandise. From a small workshop in 2012, we've
+                Girja Enterprise Catalog is a Surat-based manufacturer
+                specialising in custom branded apparel and accessories. From a
+                small workshop in 2012, we've
                 grown into one of Gujarat's leading bulk apparel and accessories
                 manufacturers.
               </p>

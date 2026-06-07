@@ -19,14 +19,15 @@ export default function Footer() {
             <Link href="/" className="">
               <img
                 src="/images/logo/1.png"
-                alt="Girja Enterprise"
+                alt="Girja Enterprise Catalog"
                 width={100}
                 height={100}
               />
             </Link>
             <p className="text-gray-500 text-sm leading-relaxed">
-              India's trusted manufacturer for premium corporate merchandise
-              since 2012. Quality you can wear, brands people remember.
+              India's trusted catalog for premium corporate apparel and
+              accessories since 2012. Quality you can wear, brands people
+              remember.
             </p>
             <div className="flex gap-3 mt-5">
               {[Instagram, Linkedin, Twitter].map((Icon, i) => (
@@ -77,7 +78,6 @@ export default function Footer() {
                 ["Our Process", "/#process"],
                 ["Clients", "/#clients"],
                 ["Contact", "/#contact"],
-                ["Admin Panel", "/admin"],
               ].map(([item, href]) => (
                 <li key={item}>
                   <Link
@@ -129,7 +129,7 @@ export default function Footer() {
 
         <div className="border-t border-white/5 pt-6 flex flex-col sm:flex-row justify-between items-center gap-2">
           <p className="text-gray-600 text-xs">
-            © 2024 BrandForge. All rights reserved.
+            © 2024 Girja Enterprise Catalog. All rights reserved.
           </p>
           <p className="text-gray-600 text-xs">Made with ♥ in Surat, India</p>
         </div>

@@ -33,7 +33,7 @@ export default function Navbar() {
         <Link href="/" className="">
           <img
             src="/images/logo/1.png"
-            alt="Girja Enterprise"
+            alt="Girja Enterprise Catalog"
             width={100}
             height={100}
           />
