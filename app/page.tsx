@@ -115,8 +115,8 @@ export default function HomePage() {
             <div className="flex flex-wrap gap-8 mt-16">
               {[
                 { num: "500+", label: "Corporate Clients" },
-                { num: "50L+", label: "Units Delivered" },
-                { num: "12+", label: "Years Experience" },
+                { num: "2L+", label: "Units Delivered" },
+                { num: "4+", label: "Years Experience" },
                 { num: "48hr", label: "Sample Delivery" },
               ].map((stat) => (
                 <div key={stat.label}>
@@ -380,12 +380,12 @@ export default function HomePage() {
               <h2 className="font-display text-6xl text-white leading-none mb-6">
                 BUILDING BRANDS
                 <br />
-                <span className="text-gradient">SINCE 2012</span>
+                <span className="text-gradient">SINCE 2022</span>
               </h2>
               <p className="text-gray-400 text-base leading-relaxed mb-5">
                 Girja Enterprise Catalog is a Surat-based manufacturer
                 specialising in custom branded apparel and accessories. From a
-                small workshop in 2012, we've
+                small workshop in 2022, we've
                 grown into one of Gujarat's leading bulk apparel and accessories
                 manufacturers.
               </p>
@@ -396,19 +396,7 @@ export default function HomePage() {
                 Fortune 500 companies, startups, NGOs, and event agencies across
                 India.
               </p>
-              <div className="grid grid-cols-2 gap-4">
-                {[
-                  { icon: Building2, label: "50,000 sq ft factory" },
-                  { icon: Users, label: "200+ skilled workers" },
-                  { icon: Award, label: "ISO 9001:2015 certified" },
-                  { icon: CheckCircle2, label: "Eco-friendly processes" },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3">
-                    <item.icon size={16} className="text-orange-400 shrink-0" />
-                    <span className="text-gray-400 text-sm">{item.label}</span>
-                  </div>
-                ))}
-              </div>
+
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -418,8 +406,8 @@ export default function HomePage() {
                   label: "Corporate Clients",
                   sub: "Across India",
                 },
-                { num: "50L+", label: "Units Produced", sub: "Annually" },
-                { num: "12+", label: "Years in Business", sub: "Est. 2012" },
+                { num: "2L+", label: "Units Produced", sub: "Annually" },
+                { num: "4+", label: "Years in Business", sub: "Est. 2022" },
                 { num: "99%", label: "On-time Delivery", sub: "Guaranteed" },
               ].map((stat, i) => (
                 <div
@@ -467,7 +455,7 @@ export default function HomePage() {
                   icon: MapPin,
                   title: "Visit Us",
                   lines: [
-                    "Ground Floor-38, polaris mall, Puna canal BRTS road, near Param Hospital, Radhika Park Society, Punagam, Varachha, Surat, Gujarat 395010",
+                    "Ground Floor-27, Silver business hub, BRTS Rd, near bapa sitaram chowk, Sarshvati Park, Simada Gam, Yoginagar Society, Surat, Gujarat 395011",
                   ],
                 },
                 {
@@ -478,12 +466,12 @@ export default function HomePage() {
                 {
                   icon: Mail,
                   title: "Email Us",
-                  lines: ["girjaenterprise@gmail.com"],
+                  lines: ["sales.girjaenterprise@gmail.com"],
                 },
                 {
                   icon: Clock,
                   title: "Working Hours",
-                  lines: ["Mon–Sat: 9:00 AM – 6:00 PM", "Sunday: Closed"],
+                  lines: ["Mon–Sat: 10:00 AM – 7:00 PM", "Sunday: Closed"],
                 },
               ].map((item, i) => (
                 <div key={i} className="flex gap-4">

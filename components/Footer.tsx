@@ -18,7 +18,7 @@ export default function Footer() {
           <div className="md:col-span-1">
             <Link href="/" className="">
               <img
-                src="/images/logo/1.png"
+                src="/images/logo/logo.png"
                 alt="Girja Enterprise Catalog"
                 width={100}
                 height={100}
@@ -26,7 +26,7 @@ export default function Footer() {
             </Link>
             <p className="text-gray-500 text-sm leading-relaxed">
               India's trusted catalog for premium corporate apparel and
-              accessories since 2012. Quality you can wear, brands people
+              accessories since 2022. Quality you can wear, brands people
               remember.
             </p>
             <div className="flex gap-3 mt-5">
@@ -100,9 +100,7 @@ export default function Footer() {
               <li className="flex gap-3 text-gray-500 text-sm">
                 <MapPin size={15} className="text-orange-500 shrink-0 mt-0.5" />
                 <span>
-                  Ground Floor-38, polaris mall, Puna canal BRTS road, near
-                  Param Hospital, Radhika Park Society, Punagam, Varachha,
-                  Surat, Gujarat 395010
+                  Ground Floor-27, Silver business hub, BRTS Rd, near bapa sitaram chowk, Sarshvati Park, Simada Gam, Yoginagar Society, Surat, Gujarat 395011
                 </span>
               </li>
               <li className="flex gap-3 text-gray-500 text-sm">
@@ -117,10 +115,10 @@ export default function Footer() {
               <li className="flex gap-3 text-gray-500 text-sm">
                 <Mail size={15} className="text-orange-500 shrink-0 mt-0.5" />
                 <a
-                  href="mailto:girjaenterprise@gmail.com"
+                  href="mailto:sales.girjaenterprise@gmail.com"
                   className="hover:text-orange-400 transition-colors"
                 >
-                  girjaenterprise@gmail.com
+                  sales.girjaenterprise@gmail.com
                 </a>
               </li>
             </ul>
