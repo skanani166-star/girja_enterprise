@@ -18,7 +18,7 @@ export default function Footer() {
           <div className="md:col-span-1">
             <Link href="/" className="">
               <img
-                src="/images/logo/logo.png"
+                src="/logo.png"
                 alt="Girja Enterprise Catalog"
                 width={100}
                 height={100}
@@ -100,7 +100,9 @@ export default function Footer() {
               <li className="flex gap-3 text-gray-500 text-sm">
                 <MapPin size={15} className="text-orange-500 shrink-0 mt-0.5" />
                 <span>
-                  Ground Floor-27, Silver business hub, BRTS Rd, near bapa sitaram chowk, Sarshvati Park, Simada Gam, Yoginagar Society, Surat, Gujarat 395011
+                  Ground Floor-27, Silver business hub, BRTS Rd, near bapa
+                  sitaram chowk, Sarshvati Park, Simada Gam, Yoginagar Society,
+                  Surat, Gujarat 395011
                 </span>
               </li>
               <li className="flex gap-3 text-gray-500 text-sm">

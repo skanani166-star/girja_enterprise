@@ -4,25 +4,55 @@ import { useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
-import productsData from "@/data/products.json";
 import { Search, SlidersHorizontal } from "lucide-react";
+
+interface ProductCategory {
+  id: string;
+  name: string;
+}
+
+interface ProductsData {
+  categories: ProductCategory[];
+  products: any[];
+}
 
 export default function ProductsContent() {
   const searchParams = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [search, setSearch] = useState("");
+  const [data, setData] = useState<ProductsData>({ categories: [], products: [] });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const cat = searchParams.get("category");
     if (cat) setSelectedCategory(cat);
   }, [searchParams]);
 
+  useEffect(() => {
+    async function loadProducts() {
+      setLoading(true);
+      try {
+        const res = await fetch("/api/products");
+        if (!res.ok) throw new Error("Failed to load products");
+        const json = await res.json();
+        setData(json);
+      } catch (err) {
+        setError("Unable to load products. Refresh the page.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadProducts();
+  }, []);
+
   const categories = [
     { id: "all", label: "All Products" },
-    ...productsData.categories.map((c) => ({ id: c.id, label: c.name })),
+    ...data.categories.map((c) => ({ id: c.id, label: c.name })),
   ];
 
-  const filtered = productsData.products.filter((p) => {
+  const filtered = data.products.filter((p) => {
     const matchCat =
       selectedCategory === "all" || p.category === selectedCategory;
     const matchSearch =
@@ -92,7 +122,11 @@ export default function ProductsContent() {
       {/* Products Grid */}
       <section className="py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          {filtered.length === 0 ? (
+          {loading ? (
+            <div className="text-center py-20 text-gray-500">Loading products...</div>
+          ) : error ? (
+            <div className="text-center py-20 text-red-400">{error}</div>
+          ) : filtered.length === 0 ? (
             <div className="text-center py-20">
               <SlidersHorizontal
                 size={40}

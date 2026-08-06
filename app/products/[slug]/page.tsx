@@ -1,28 +1,76 @@
 'use client';
-import { useState } from 'react';
-import { notFound } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
-import productsData from '@/data/products.json';
 import { ArrowLeft, Package, CheckCircle2, ChevronRight, Phone, Mail, Star, Tag, Layers, Ruler } from 'lucide-react';
 
+interface Product {
+  id: string;
+  name: string;
+  slug: string;
+  category: string;
+  price: number;
+  minQty: number;
+  description: string;
+  features: string[];
+  colors: string[];
+  badge?: string;
+  material: string;
+  weight: string;
+}
+
+interface Category {
+  id: string;
+  name: string;
+}
+
 export default function ProductDetailPage({ params }: { params: { slug: string } }) {
-  const product = productsData.products.find((p) => p.slug === params.slug);
-  if (!product) notFound();
-
-  const related = productsData.products.filter(
-    (p) => p.category === product.category && p.id !== product.id
-  ).slice(0, 3);
-
-  const category = productsData.categories.find((c) => c.id === product.category);
-
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
-  const [quantity, setQuantity] = useState(product.minQty);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [selectedColor, setSelectedColor] = useState('');
+  const [quantity, setQuantity] = useState(0);
   const [enquirySent, setEnquirySent] = useState(false);
 
+  useEffect(() => {
+    async function loadProduct() {
+      try {
+        const res = await fetch('/api/products');
+        if (!res.ok) throw new Error('Failed to load product');
+        const json = await res.json();
+        setCategories(json.categories || []);
+        setProducts(json.products || []);
+        const found = json.products.find((item: Product) => item.slug === params.slug);
+        if (!found) {
+          setError('Product not found');
+          return;
+        }
+        setProduct(found);
+        setSelectedColor(found.colors[0] || '');
+        setQuantity(found.minQty);
+      } catch (err) {
+        setError('Unable to load product.');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadProduct();
+  }, [params.slug]);
+
+  const related = product
+    ? products.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 3)
+    : [];
+
+  const category = product ? categories.find((c) => c.id === product.category) : null;
+
   const handleEnquiry = async () => {
+    if (!product) return;
+
     const res = await fetch('/api/contact', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -36,6 +84,28 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
     });
     if (res.ok) setEnquirySent(true);
   };
+
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-[#0a0a0a]">
+        <Navbar />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-32 pb-10 text-gray-400">
+          Loading product...
+        </div>
+      </main>
+    );
+  }
+
+  if (error || !product) {
+    return (
+      <main className="min-h-screen bg-[#0a0a0a]">
+        <Navbar />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-32 pb-10 text-gray-400">
+          {error || 'Product not found.'}
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-[#0a0a0a]">

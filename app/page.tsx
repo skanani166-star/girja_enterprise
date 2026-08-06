@@ -1,10 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
-import productsData from "@/data/products.json";
 import {
   ArrowRight,
   CheckCircle2,
@@ -25,6 +24,21 @@ import {
   ShoppingBag,
 } from "lucide-react";
 
+interface Product {
+  id: string;
+  name: string;
+  slug: string;
+  category: string;
+  price: number;
+  minQty: number;
+  description: string;
+  features: string[];
+  colors: string[];
+  badge?: string;
+  material: string;
+  image?: string;
+}
+
 export default function HomePage() {
   const [formData, setFormData] = useState({
     name: "",
@@ -35,8 +49,25 @@ export default function HomePage() {
   });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+  const [productsLoading, setProductsLoading] = useState(true);
 
-  const featuredProducts = productsData.products.slice(0, 3);
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        const res = await fetch("/api/products");
+        if (!res.ok) throw new Error("Unable to load products");
+        const json = await res.json();
+        setFeaturedProducts(json.products.slice(0, 3));
+      } catch (err) {
+        setFeaturedProducts([]);
+      } finally {
+        setProductsLoading(false);
+      }
+    }
+
+    loadProducts();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -242,11 +273,15 @@ export default function HomePage() {
               All Products <ArrowRight size={14} />
             </Link>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          {productsLoading ? (
+            <div className="text-gray-500 text-center py-16">Loading featured products...</div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {featuredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
