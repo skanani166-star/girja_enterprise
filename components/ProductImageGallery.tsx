@@ -69,7 +69,7 @@ export default function ProductImageGallery({
     <div className="flex flex-col gap-4">
       {/* Main Image Container */}
       <div
-        className="relative bg-gradient-to-br from-[#1a1a1a] to-[#222] rounded-2xl aspect-square flex items-center justify-center border border-white/5 overflow-hidden group select-none cursor-pointer"
+        className="relative bg-slate-50 rounded-2xl aspect-square flex items-center justify-center border border-slate-200 shadow-sm overflow-hidden group select-none cursor-pointer"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -87,7 +87,7 @@ export default function ProductImageGallery({
             onClick={() => setIsLightboxOpen(true)}
           />
         ) : (
-          <div className="flex flex-col items-center justify-center text-gray-600 gap-2">
+          <div className="flex flex-col items-center justify-center text-slate-400 gap-2">
             <Package size={80} />
             <span className="text-xs">No image available</span>
           </div>
@@ -97,7 +97,7 @@ export default function ProductImageGallery({
         {currentImage && !imgErrors[selectedIndex] && (
           <button
             onClick={() => setIsLightboxOpen(true)}
-            className="absolute top-5 right-5 z-10 w-9 h-9 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white/80 hover:text-white hover:bg-black/80 transition-all opacity-0 group-hover:opacity-100"
+            className="absolute top-5 right-5 z-10 w-9 h-9 rounded-full bg-white/90 backdrop-blur-md shadow-md flex items-center justify-center text-slate-700 hover:text-orange-600 hover:bg-white transition-all opacity-0 group-hover:opacity-100"
             title="View Fullscreen"
           >
             <Maximize2 size={16} />
@@ -112,7 +112,7 @@ export default function ProductImageGallery({
                 e.stopPropagation();
                 handlePrev();
               }}
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white hover:bg-orange-500 transition-all"
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/90 backdrop-blur-md shadow-md flex items-center justify-center text-slate-800 hover:bg-orange-500 hover:text-white transition-all"
               aria-label="Previous image"
             >
               <ChevronLeft size={20} />
@@ -123,7 +123,7 @@ export default function ProductImageGallery({
                 e.stopPropagation();
                 handleNext();
               }}
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white hover:bg-orange-500 transition-all"
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/90 backdrop-blur-md shadow-md flex items-center justify-center text-slate-800 hover:bg-orange-500 hover:text-white transition-all"
               aria-label="Next image"
             >
               <ChevronRight size={20} />
@@ -133,7 +133,7 @@ export default function ProductImageGallery({
 
         {/* Counter Badge */}
         {totalImages > 1 && (
-          <div className="absolute bottom-4 right-4 z-10 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md text-xs font-medium text-gray-300">
+          <div className="absolute bottom-4 right-4 z-10 px-3 py-1 rounded-full bg-slate-900/80 backdrop-blur-md text-xs font-medium text-white shadow-sm">
             {selectedIndex + 1} / {totalImages}
           </div>
         )}
@@ -141,15 +141,15 @@ export default function ProductImageGallery({
 
       {/* Thumbnails Row */}
       {totalImages > 1 && (
-        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-white/10">
+        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-slate-200">
           {formattedImages.map((img, index) => (
             <button
               key={`${img}-${index}`}
               onClick={() => setSelectedIndex(index)}
               className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 shrink-0 transition-all ${
                 selectedIndex === index
-                  ? "border-orange-500 ring-2 ring-orange-500/30 opacity-100"
-                  : "border-white/10 opacity-60 hover:opacity-100 hover:border-white/30"
+                  ? "border-orange-500 ring-2 ring-orange-500/30 opacity-100 shadow-sm"
+                  : "border-slate-200 opacity-70 hover:opacity-100 hover:border-slate-400"
               }`}
             >
               {!imgErrors[index] ? (
@@ -162,7 +162,7 @@ export default function ProductImageGallery({
                   className="object-cover"
                 />
               ) : (
-                <div className="w-full h-full bg-[#111] flex items-center justify-center text-gray-600">
+                <div className="w-full h-full bg-slate-100 flex items-center justify-center text-slate-400">
                   <Package size={20} />
                 </div>
               )}

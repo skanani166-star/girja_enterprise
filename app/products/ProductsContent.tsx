@@ -66,20 +66,20 @@ export default function ProductsContent() {
   });
 
   return (
-    <main className="min-h-screen bg-[#0a0a0a]">
+    <main className="min-h-screen bg-white text-slate-900">
       <Navbar />
 
       {/* Header */}
-      <section className="pt-32 pb-14 border-b border-white/5 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:60px_60px]" />
+      <section className="pt-32 pb-14 border-b border-slate-100 bg-slate-50/60 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
-          <p className="text-orange-400 text-sm uppercase tracking-widest font-semibold mb-2">
+          <p className="text-orange-600 text-sm uppercase tracking-widest font-semibold mb-2">
             Our Catalog
           </p>
-          <h1 className="font-display text-7xl text-white leading-none mb-4">
+          <h1 className="font-display text-7xl text-slate-900 leading-none mb-4">
             ALL PRODUCTS
           </h1>
-          <p className="text-gray-500 text-base max-w-xl">
+          <p className="text-slate-600 text-base max-w-xl">
             Browse our full range of corporate products. Click any product to
             view detailed specifications and send a bulk order enquiry.
           </p>
@@ -87,7 +87,7 @@ export default function ProductsContent() {
       </section>
 
       {/* Filters */}
-      <section className="sticky top-[60px] z-40 bg-[#0a0a0a]/95 backdrop-blur-md border-b border-white/5 py-4">
+      <section className="sticky top-[60px] z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 py-4 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
           {/* Category tabs */}
           <div className="flex gap-2 flex-wrap">
@@ -95,10 +95,10 @@ export default function ProductsContent() {
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`px-4 py-1.5 rounded-full text-sm font-medium uppercase tracking-wide transition-all duration-200 ${
+                className={`px-4 py-1.5 rounded-full text-sm font-semibold uppercase tracking-wide transition-all duration-200 ${
                   selectedCategory === cat.id
-                    ? "bg-orange-500 text-white"
-                    : "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white"
+                    ? "bg-orange-500 text-white shadow-xs"
+                    : "bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900"
                 }`}
               >
                 {cat.label}
@@ -110,14 +110,14 @@ export default function ProductsContent() {
           <div className="relative">
             <Search
               size={14}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
             />
             <input
               type="text"
               placeholder="Search products..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="bg-white/5 border border-white/10 rounded-lg pl-8 pr-4 py-1.5 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-orange-500/50 w-52"
+              className="bg-slate-100 border border-slate-200 rounded-lg pl-8 pr-4 py-1.5 text-slate-900 text-sm placeholder-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 w-52 shadow-xs"
             />
           </div>
         </div>
@@ -127,29 +127,29 @@ export default function ProductsContent() {
       <section className="py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           {loading ? (
-            <div className="text-center py-20 text-gray-500">Loading products...</div>
+            <div className="text-center py-20 text-slate-400">Loading products...</div>
           ) : error ? (
-            <div className="text-center py-20 text-red-400">{error}</div>
+            <div className="text-center py-20 text-red-500 font-medium">{error}</div>
           ) : filtered.length === 0 ? (
             <div className="text-center py-20">
               <SlidersHorizontal
                 size={40}
-                className="text-gray-700 mx-auto mb-4"
+                className="text-slate-300 mx-auto mb-4"
               />
-              <p className="text-gray-500 text-lg">No products found</p>
+              <p className="text-slate-600 text-lg">No products found</p>
               <button
                 onClick={() => {
                   setSelectedCategory("all");
                   setSearch("");
                 }}
-                className="mt-4 text-orange-400 text-sm hover:underline"
+                className="mt-4 text-orange-600 font-semibold text-sm hover:underline"
               >
                 Clear filters
               </button>
             </div>
           ) : (
             <>
-              <p className="text-gray-600 text-sm mb-8">
+              <p className="text-slate-500 text-sm font-medium mb-8">
                 {filtered.length} product{filtered.length !== 1 ? "s" : ""}{" "}
                 found
               </p>

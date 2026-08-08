@@ -167,32 +167,32 @@ export default function AdminPage() {
   );
 
   return (
-    <main className="min-h-screen bg-[#0a0a0a] pb-10">
+    <main className="min-h-screen bg-slate-50 text-slate-900 pb-10">
       <Navbar />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-32">
         <div className="flex flex-col gap-6">
-          <div className="bg-[#111] border border-white/10 rounded-3xl p-8">
-            <h1 className="text-3xl font-bold text-white mb-4">Admin Product Manager</h1>
-            <p className="text-gray-400 mb-4">Create, update, and delete products. Changes are saved to the shared product store and appear on the website immediately.</p>
+          <div className="bg-white border border-slate-200/90 rounded-3xl p-8 shadow-sm">
+            <h1 className="text-3xl font-bold text-slate-900 mb-2">Admin Product Manager</h1>
+            <p className="text-slate-600 mb-6">Create, update, and delete products. Changes are saved to the shared product store and appear on the website immediately.</p>
 
             <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div>
-                  <label className="text-sm text-gray-300">Product Name</label>
+                  <label className="text-sm font-semibold text-slate-700">Product Name</label>
                   <input
                     value={formState.name}
                     onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                    className="w-full mt-2 rounded-2xl bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white"
+                    className="w-full mt-2 rounded-2xl bg-slate-50 border border-slate-200 px-4 py-3 text-slate-900 focus:bg-white focus:border-orange-500 focus:outline-none transition-colors"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="text-sm text-gray-300">Category</label>
+                  <label className="text-sm font-semibold text-slate-700">Category</label>
                   <select
                     value={formState.category}
                     onChange={(e) => setFormState({ ...formState, category: e.target.value })}
-                    className="w-full mt-2 rounded-2xl bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white"
+                    className="w-full mt-2 rounded-2xl bg-slate-50 border border-slate-200 px-4 py-3 text-slate-900 focus:bg-white focus:border-orange-500 focus:outline-none transition-colors"
                     required
                   >
                     <option value="">Select category</option>
@@ -202,31 +202,31 @@ export default function AdminPage() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="text-sm text-gray-300">Price</label>
+                    <label className="text-sm font-semibold text-slate-700">Price</label>
                     <input
                       type="number"
                       value={formState.price}
                       onChange={(e) => setFormState({ ...formState, price: e.target.value })}
-                      className="w-full mt-2 rounded-2xl bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white"
+                      className="w-full mt-2 rounded-2xl bg-slate-50 border border-slate-200 px-4 py-3 text-slate-900 focus:bg-white focus:border-orange-500 focus:outline-none transition-colors"
                     />
                   </div>
                   <div>
-                    <label className="text-sm text-gray-300">Min Qty</label>
+                    <label className="text-sm font-semibold text-slate-700">Min Qty</label>
                     <input
                       type="number"
                       value={formState.minQty}
                       onChange={(e) => setFormState({ ...formState, minQty: e.target.value })}
-                      className="w-full mt-2 rounded-2xl bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white"
+                      className="w-full mt-2 rounded-2xl bg-slate-50 border border-slate-200 px-4 py-3 text-slate-900 focus:bg-white focus:border-orange-500 focus:outline-none transition-colors"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-sm text-gray-300">Description</label>
+                  <label className="text-sm font-semibold text-slate-700">Description</label>
                   <textarea
                     value={formState.description}
                     onChange={(e) => setFormState({ ...formState, description: e.target.value })}
-                    className="w-full mt-2 rounded-2xl bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white min-h-[120px]"
+                    className="w-full mt-2 rounded-2xl bg-slate-50 border border-slate-200 px-4 py-3 text-slate-900 focus:bg-white focus:border-orange-500 focus:outline-none transition-colors min-h-[120px]"
                     required
                   />
                 </div>
@@ -234,66 +234,66 @@ export default function AdminPage() {
 
               <div className="space-y-4">
                 <div>
-                  <label className="text-sm text-gray-300">Slug</label>
+                  <label className="text-sm font-semibold text-slate-700">Slug</label>
                   <input
                     value={formState.slug}
                     onChange={(e) => setFormState({ ...formState, slug: e.target.value })}
-                    className="w-full mt-2 rounded-2xl bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white"
+                    className="w-full mt-2 rounded-2xl bg-slate-50 border border-slate-200 px-4 py-3 text-slate-900 focus:bg-white focus:border-orange-500 focus:outline-none transition-colors"
                   />
                 </div>
 
                 <div>
-                  <label className="text-sm text-gray-300">Features (comma separated)</label>
+                  <label className="text-sm font-semibold text-slate-700">Features (comma separated)</label>
                   <input
                     value={formState.features}
                     onChange={(e) => setFormState({ ...formState, features: e.target.value })}
-                    className="w-full mt-2 rounded-2xl bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white"
+                    className="w-full mt-2 rounded-2xl bg-slate-50 border border-slate-200 px-4 py-3 text-slate-900 focus:bg-white focus:border-orange-500 focus:outline-none transition-colors"
                   />
                 </div>
 
                 <div>
-                  <label className="text-sm text-gray-300">Colors (comma separated)</label>
+                  <label className="text-sm font-semibold text-slate-700">Colors (comma separated)</label>
                   <input
                     value={formState.colors}
                     onChange={(e) => setFormState({ ...formState, colors: e.target.value })}
-                    className="w-full mt-2 rounded-2xl bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white"
+                    className="w-full mt-2 rounded-2xl bg-slate-50 border border-slate-200 px-4 py-3 text-slate-900 focus:bg-white focus:border-orange-500 focus:outline-none transition-colors"
                   />
                 </div>
 
                 <div>
-                  <label className="text-sm text-gray-300">Badge</label>
+                  <label className="text-sm font-semibold text-slate-700">Badge</label>
                   <input
                     value={formState.badge}
                     onChange={(e) => setFormState({ ...formState, badge: e.target.value })}
-                    className="w-full mt-2 rounded-2xl bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white"
+                    className="w-full mt-2 rounded-2xl bg-slate-50 border border-slate-200 px-4 py-3 text-slate-900 focus:bg-white focus:border-orange-500 focus:outline-none transition-colors"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="text-sm text-gray-300">Material</label>
+                    <label className="text-sm font-semibold text-slate-700">Material</label>
                     <input
                       value={formState.material}
                       onChange={(e) => setFormState({ ...formState, material: e.target.value })}
-                      className="w-full mt-2 rounded-2xl bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white"
+                      className="w-full mt-2 rounded-2xl bg-slate-50 border border-slate-200 px-4 py-3 text-slate-900 focus:bg-white focus:border-orange-500 focus:outline-none transition-colors"
                     />
                   </div>
                   <div>
-                    <label className="text-sm text-gray-300">Weight</label>
+                    <label className="text-sm font-semibold text-slate-700">Weight</label>
                     <input
                       value={formState.weight}
                       onChange={(e) => setFormState({ ...formState, weight: e.target.value })}
-                      className="w-full mt-2 rounded-2xl bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white"
+                      className="w-full mt-2 rounded-2xl bg-slate-50 border border-slate-200 px-4 py-3 text-slate-900 focus:bg-white focus:border-orange-500 focus:outline-none transition-colors"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-sm text-gray-300">Image Path</label>
+                  <label className="text-sm font-semibold text-slate-700">Image Path</label>
                   <input
                     value={formState.image}
                     onChange={(e) => setFormState({ ...formState, image: e.target.value })}
-                    className="w-full mt-2 rounded-2xl bg-[#0f0f0f] border border-white/10 px-4 py-3 text-white"
+                    className="w-full mt-2 rounded-2xl bg-slate-50 border border-slate-200 px-4 py-3 text-slate-900 focus:bg-white focus:border-orange-500 focus:outline-none transition-colors"
                   />
                 </div>
 
@@ -301,32 +301,32 @@ export default function AdminPage() {
                   <button
                     type="submit"
                     disabled={saving}
-                    className="bg-orange-500 hover:bg-orange-600 text-white rounded-2xl px-6 py-3 font-semibold transition-all"
+                    className="bg-orange-500 hover:bg-orange-600 text-white rounded-2xl px-6 py-3 font-semibold shadow-sm transition-all"
                   >
                     {saving ? 'Saving...' : editProduct ? 'Update Product' : 'Add Product'}
                   </button>
                   <button
                     type="button"
                     onClick={resetForm}
-                    className="border border-white/10 text-white rounded-2xl px-6 py-3 hover:border-orange-500/30 transition-all"
+                    className="border border-slate-300 text-slate-700 rounded-2xl px-6 py-3 hover:border-orange-500 hover:text-orange-600 transition-all"
                   >
                     Clear
                   </button>
                 </div>
 
-                {error && <p className="text-sm text-red-400">{error}</p>}
+                {error && <p className="text-sm text-red-500 font-medium">{error}</p>}
               </div>
             </form>
           </div>
 
-          <div className="bg-[#111] border border-white/10 rounded-3xl p-6 overflow-x-auto">
-            <h2 className="text-2xl font-semibold text-white mb-4">Product List</h2>
+          <div className="bg-white border border-slate-200/90 rounded-3xl p-6 overflow-x-auto shadow-sm">
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">Product List</h2>
             {loading ? (
-              <p className="text-gray-400">Loading products...</p>
+              <p className="text-slate-500">Loading products...</p>
             ) : (
-              <table className="w-full table-auto text-left text-sm text-gray-300">
+              <table className="w-full table-auto text-left text-sm text-slate-800">
                 <thead>
-                  <tr className="border-b border-white/10 text-gray-500">
+                  <tr className="border-b border-slate-200 text-slate-500 font-semibold">
                     <th className="py-3 px-4">Name</th>
                     <th className="py-3 px-4">Category</th>
                     <th className="py-3 px-4">Price</th>
@@ -336,23 +336,23 @@ export default function AdminPage() {
                 </thead>
                 <tbody>
                   {products.map((product) => (
-                    <tr key={product.id} className="border-b border-white/10">
-                      <td className="py-3 px-4">{product.name}</td>
-                      <td className="py-3 px-4">{product.category}</td>
-                      <td className="py-3 px-4">₹{product.price}</td>
-                      <td className="py-3 px-4">{product.minQty}</td>
+                    <tr key={product.id} className="border-b border-slate-100 hover:bg-slate-50/50 transition-colors">
+                      <td className="py-3 px-4 font-semibold text-slate-900">{product.name}</td>
+                      <td className="py-3 px-4 text-slate-600 capitalize">{product.category}</td>
+                      <td className="py-3 px-4 font-medium text-slate-800">₹{product.price}</td>
+                      <td className="py-3 px-4 text-slate-600">{product.minQty}</td>
                       <td className="py-3 px-4 flex gap-2">
                         <button
                           type="button"
                           onClick={() => handleEdit(product)}
-                          className="px-3 py-2 rounded-2xl bg-white/5 text-white hover:bg-white/10"
+                          className="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-800 font-semibold hover:bg-slate-200 transition-colors"
                         >
                           Edit
                         </button>
                         <button
                           type="button"
                           onClick={() => handleDelete(product.id)}
-                          className="px-3 py-2 rounded-2xl bg-red-500/10 text-red-300 hover:bg-red-500/20"
+                          className="px-3 py-1.5 rounded-xl bg-red-50 text-red-600 font-semibold hover:bg-red-100 transition-colors"
                         >
                           Delete
                         </button>

@@ -4,6 +4,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
+import { scrollToSectionCenter, handleHashLinkClick } from "@/lib/scroll-utils";
 import {
   ArrowRight,
   CheckCircle2,
@@ -82,6 +83,22 @@ export default function HomePage() {
     loadData();
   }, []);
 
+  useEffect(() => {
+    const handleHashScroll = () => {
+      const hash = window.location.hash;
+      if (hash) {
+        const id = hash.replace('#', '');
+        setTimeout(() => {
+          scrollToSectionCenter(id);
+        }, 150);
+      }
+    };
+
+    handleHashScroll();
+    window.addEventListener('hashchange', handleHashScroll);
+    return () => window.removeEventListener('hashchange', handleHashScroll);
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -125,38 +142,38 @@ export default function HomePage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#0a0a0a]">
+    <main className="min-h-screen bg-white text-slate-900">
       <Navbar />
 
       {/* ===== HERO ===== */}
       <section className="relative min-h-screen flex items-center hero-glow overflow-hidden pt-20">
         {/* BG Grid */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
         {/* Glow orb */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-orange-500/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-orange-500/10 rounded-full blur-3xl" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20">
           <div className="max-w-4xl">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 border border-orange-500/30 bg-orange-500/5 rounded-full px-4 py-1.5 text-orange-400 text-sm mb-8">
-              <span className="w-2 h-2 bg-orange-400 rounded-full animate-pulse" />
+            <div className="inline-flex items-center gap-2 border border-orange-500/30 bg-orange-500/10 rounded-full px-4 py-1.5 text-orange-600 font-semibold text-sm mb-8 shadow-sm">
+              <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse" />
               Your Trusted Corporate Gifting Partner
             </div>
 
-            <h1 className="font-display text-7xl sm:text-8xl lg:text-9xl text-white leading-none tracking-tight mb-6">
+            <h1 className="font-display text-7xl sm:text-8xl lg:text-9xl text-slate-900 leading-none tracking-tight mb-6">
               WEAR YOUR
               <span className="text-gradient block">BRAND</span>
               WITH PRIDE
             </h1>
 
-            <p className="text-gray-400 text-xl max-w-2xl mb-10 leading-relaxed">
+            <p className="text-slate-600 text-xl max-w-2xl mb-10 leading-relaxed font-normal">
               Your trusted partner for custom corporate branding, enterprise apparel, and promotional merchandise. Premium quality manufacturing tailored for teams, corporate events, and client giveaways with pan-India delivery.
             </p>
 
             <div className="flex flex-wrap gap-4">
               <Link
                 href="/products"
-                className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-4 rounded-lg transition-all duration-200 text-base uppercase tracking-wide group"
+                className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 text-base uppercase tracking-wide group"
               >
                 Explore Products
                 <ArrowRight
@@ -166,7 +183,8 @@ export default function HomePage() {
               </Link>
               <Link
                 href="/#contact"
-                className="flex items-center gap-2 border border-white/10 hover:border-orange-500/40 text-white font-semibold px-8 py-4 rounded-lg transition-all duration-200 text-base uppercase tracking-wide"
+                onClick={(e) => handleHashLinkClick(e, "/#contact")}
+                className="flex items-center gap-2 border border-slate-300 hover:border-orange-500 bg-white hover:bg-orange-50/50 text-slate-800 font-semibold px-8 py-4 rounded-lg shadow-sm transition-all duration-200 text-base uppercase tracking-wide"
               >
                 Get Free Quote
               </Link>
@@ -181,10 +199,10 @@ export default function HomePage() {
                 { num: "48hr", label: "Sample Delivery" },
               ].map((stat) => (
                 <div key={stat.label}>
-                  <div className="font-display text-4xl text-white">
+                  <div className="font-display text-4xl text-slate-900">
                     {stat.num}
                   </div>
-                  <div className="text-gray-500 text-sm uppercase tracking-widest">
+                  <div className="text-slate-500 text-sm uppercase tracking-widest font-medium">
                     {stat.label}
                   </div>
                 </div>
@@ -195,20 +213,20 @@ export default function HomePage() {
       </section>
 
       {/* ===== DYNAMIC CATEGORIES ===== */}
-      <section className="py-20 border-t border-white/5">
+      <section className="py-20 bg-slate-50/60 border-t border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-end justify-between mb-12">
             <div>
-              <p className="text-orange-400 text-sm uppercase tracking-widest font-semibold mb-2">
+              <p className="text-orange-600 text-sm uppercase tracking-widest font-semibold mb-2">
                 What We Make
               </p>
-              <h2 className="font-display text-5xl text-white">
+              <h2 className="font-display text-5xl text-slate-900">
                 PRODUCT CATEGORIES
               </h2>
             </div>
             <Link
               href="/products"
-              className="hidden sm:flex items-center gap-2 text-orange-400 hover:text-orange-300 text-sm font-medium"
+              className="hidden sm:flex items-center gap-2 text-orange-600 hover:text-orange-700 text-sm font-semibold"
             >
               View All <ArrowRight size={14} />
             </Link>
@@ -223,24 +241,24 @@ export default function HomePage() {
                 <Link
                   key={cat.id}
                   href={`/products?category=${cat.id}`}
-                  className="group relative bg-[#111] border border-white/10 hover:border-orange-500/50 rounded-2xl p-8 transition-all duration-300 overflow-hidden card-hover"
+                  className="group relative bg-white border border-slate-200/90 hover:border-orange-500/50 rounded-2xl p-8 transition-all duration-300 overflow-hidden card-hover shadow-sm hover:shadow-xl"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <div className="relative">
-                    <div className="w-14 h-14 rounded-xl bg-white/5 flex items-center justify-center mb-5 text-orange-400 group-hover:bg-orange-500 group-hover:text-white transition-all">
+                    <div className="w-14 h-14 rounded-xl bg-orange-50 flex items-center justify-center mb-5 text-orange-500 group-hover:bg-orange-500 group-hover:text-white transition-all shadow-xs">
                       <IconComp size={26} />
                     </div>
-                    <h3 className="text-white font-bold text-xl mb-2">
+                    <h3 className="text-slate-900 font-bold text-xl mb-2">
                       {cat.name}
                     </h3>
-                    <p className="text-gray-500 text-sm leading-relaxed mb-5 line-clamp-2">
+                    <p className="text-slate-500 text-sm leading-relaxed mb-5 line-clamp-2">
                       {cat.description || "Browse custom products in this category."}
                     </p>
-                    <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                      <span className="text-gray-600 text-xs">
+                    <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+                      <span className="text-slate-400 text-xs font-medium">
                         {count} product{count !== 1 ? "s" : ""}
                       </span>
-                      <span className="text-orange-400 flex items-center gap-1 text-sm font-medium group-hover:translate-x-1 transition-transform">
+                      <span className="text-orange-600 flex items-center gap-1 text-sm font-semibold group-hover:translate-x-1 transition-transform">
                         Explore <ChevronRight size={14} />
                       </span>
                     </div>
@@ -253,26 +271,26 @@ export default function HomePage() {
       </section>
 
       {/* ===== FEATURED PRODUCTS ===== */}
-      <section className="py-20 bg-[#080808]">
+      <section className="py-20 bg-white border-t border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-end justify-between mb-12">
             <div>
-              <p className="text-orange-400 text-sm uppercase tracking-widest font-semibold mb-2">
+              <p className="text-orange-600 text-sm uppercase tracking-widest font-semibold mb-2">
                 Handpicked
               </p>
-              <h2 className="font-display text-5xl text-white">
+              <h2 className="font-display text-5xl text-slate-900">
                 FEATURED PRODUCTS
               </h2>
             </div>
             <Link
               href="/products"
-              className="hidden sm:flex items-center gap-2 text-orange-400 hover:text-orange-300 text-sm font-medium"
+              className="hidden sm:flex items-center gap-2 text-orange-600 hover:text-orange-700 text-sm font-semibold"
             >
               All Products <ArrowRight size={14} />
             </Link>
           </div>
           {productsLoading ? (
-            <div className="text-gray-500 text-center py-16">Loading featured products...</div>
+            <div className="text-slate-400 text-center py-16">Loading featured products...</div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {featuredProducts.slice(0, 3).map((product) => (
@@ -284,13 +302,13 @@ export default function HomePage() {
       </section>
 
       {/* ===== WHY US ===== */}
-      <section className="py-20 border-t border-white/5" id="process">
+      <section className="py-20 bg-slate-50/60 border-t border-slate-100 scroll-mt-28" id="process">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-14">
-            <p className="text-orange-400 text-sm uppercase tracking-widest font-semibold mb-2">
+            <p className="text-orange-600 text-sm uppercase tracking-widest font-semibold mb-2">
               Why Girja Enterprise Catalog
             </p>
-            <h2 className="font-display text-5xl text-white">
+            <h2 className="font-display text-5xl text-slate-900">
               QUALITY YOU CAN COUNT ON
             </h2>
           </div>
@@ -320,15 +338,15 @@ export default function HomePage() {
             ].map((feat, i) => (
               <div
                 key={i}
-                className="bg-[#111] border border-white/5 rounded-2xl p-6 group hover:border-orange-500/20 transition-all duration-300"
+                className="bg-white border border-slate-200/90 rounded-2xl p-6 group hover:border-orange-500/40 shadow-sm hover:shadow-md transition-all duration-300"
               >
-                <div className="w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-orange-500/20 transition-colors">
-                  <feat.icon size={22} className="text-orange-400" />
+                <div className="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-orange-100 transition-colors">
+                  <feat.icon size={22} className="text-orange-600" />
                 </div>
-                <h3 className="text-white font-semibold text-base mb-2">
+                <h3 className="text-slate-900 font-bold text-base mb-2">
                   {feat.title}
                 </h3>
-                <p className="text-gray-500 text-sm leading-relaxed">
+                <p className="text-slate-600 text-sm leading-relaxed">
                   {feat.desc}
                 </p>
               </div>
@@ -338,18 +356,18 @@ export default function HomePage() {
       </section>
 
       {/* ===== OUR VALUED CLIENTS / CORPORATE PARTNERS ===== */}
-      <section className="py-16 border-t border-white/5 bg-[#0a0a0a] overflow-hidden" id="corporate-partners">
+      <section className="py-16 border-t border-slate-100 bg-white overflow-hidden scroll-mt-28" id="corporate-partners">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-10 text-center">
-          <p className="text-orange-400 text-sm uppercase tracking-widest font-semibold mb-2">
+          <p className="text-orange-600 text-sm uppercase tracking-widest font-semibold mb-2">
             Corporate Partners
           </p>
-          <h2 className="font-display text-4xl sm:text-5xl text-white">
+          <h2 className="font-display text-4xl sm:text-5xl text-slate-900">
             OUR VALUED CLIENTS
           </h2>
         </div>
 
         {/* Continuous Horizontal Marquee Container */}
-        <div className="w-full relative overflow-hidden py-4 before:absolute before:left-0 before:top-0 before:z-10 before:h-full before:w-12 sm:before:w-28 before:bg-gradient-to-r before:from-[#0a0a0a] before:to-transparent after:absolute after:right-0 after:top-0 after:z-10 after:h-full after:w-12 sm:after:w-28 after:bg-gradient-to-l after:from-[#0a0a0a] after:to-transparent">
+        <div className="w-full relative overflow-hidden py-4 before:absolute before:left-0 before:top-0 before:z-10 before:h-full before:w-12 sm:before:w-28 before:bg-gradient-to-r before:from-white before:to-transparent after:absolute after:right-0 after:top-0 after:z-10 after:h-full after:w-12 sm:after:w-28 after:bg-gradient-to-l after:from-white after:to-transparent">
           <div className="flex w-max animate-marquee gap-5 hover:[animation-play-state:paused]">
             {[
               { name: "KRIBHCO", src: "/kribhco.png" },
@@ -372,7 +390,7 @@ export default function HomePage() {
             ].map((client, idx) => (
               <div
                 key={idx}
-                className="bg-white border border-white/10 rounded-2xl p-3 sm:p-4 flex items-center justify-center text-center group transition-all duration-300 card-hover h-28 sm:h-32 w-56 sm:w-72 shrink-0 shadow-lg overflow-hidden"
+                className="bg-white border border-slate-200 rounded-2xl p-3 sm:p-4 flex items-center justify-center text-center group transition-all duration-300 card-hover h-28 sm:h-32 w-56 sm:w-72 shrink-0 shadow-sm overflow-hidden"
               >
                 <img
                   src={client.src}
@@ -386,13 +404,13 @@ export default function HomePage() {
       </section>
 
       {/* ===== CLIENT LOGOS / TESTIMONIAL ===== */}
-      <section className="py-20 bg-[#080808]" id="testimonials">
+      <section className="py-20 bg-slate-50/60 border-t border-slate-100 scroll-mt-28" id="testimonials">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-14">
-            <p className="text-orange-400 text-sm uppercase tracking-widest font-semibold mb-2">
+            <p className="text-orange-600 text-sm uppercase tracking-widest font-semibold mb-2">
               Testimonials
             </p>
-            <h2 className="font-display text-5xl text-white">
+            <h2 className="font-display text-5xl text-slate-900">
               TRUSTED BY 500+ BRANDS
             </h2>
           </div>
@@ -426,18 +444,18 @@ export default function HomePage() {
             ].map((t, i) => (
               <div
                 key={i}
-                className="bg-[#111] border border-white/5 rounded-2xl p-6 flex flex-col justify-between hover:border-orange-500/30 transition-all duration-300"
+                className="bg-white border border-slate-200/90 rounded-2xl p-6 flex flex-col justify-between shadow-sm hover:shadow-md hover:border-orange-500/40 transition-all duration-300"
               >
                 <div>
                   <div className="flex items-center justify-between gap-3 mb-3">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-teal-600/30 border border-teal-500/40 flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">
+                      <div className="w-10 h-10 rounded-full bg-teal-100 border border-teal-200 flex items-center justify-center text-teal-700 font-bold text-sm shrink-0">
                         {t.name[0]}
                       </div>
                       <div>
-                        <p className="text-white text-sm font-semibold flex items-center gap-1.5">
+                        <p className="text-slate-900 text-sm font-semibold flex items-center gap-1.5">
                           {t.name}
-                          <span className="text-gray-500 font-normal text-xs">| {t.location}</span>
+                          <span className="text-slate-400 font-normal text-xs">| {t.location}</span>
                         </p>
                         <div className="flex gap-0.5 mt-0.5">
                           {Array.from({ length: t.rating }).map((_, j) => (
@@ -453,17 +471,17 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  <p className="text-xs text-gray-500 mb-3">{t.dateProduct}</p>
+                  <p className="text-xs text-slate-400 mb-3">{t.dateProduct}</p>
 
                   <div className="flex flex-wrap gap-2 mb-4">
                     {t.badges.map((badge, bIdx) => (
-                      <span key={bIdx} className="text-[11px] font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded">
+                      <span key={bIdx} className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded">
                         {badge}
                       </span>
                     ))}
                   </div>
 
-                  <p className="text-gray-300 text-sm leading-relaxed mb-4">
+                  <p className="text-slate-700 text-sm leading-relaxed mb-4">
                     "{t.text}"
                   </p>
                 </div>
@@ -474,26 +492,26 @@ export default function HomePage() {
       </section>
 
       {/* ===== ABOUT US ===== */}
-      <section className="py-20 border-t border-white/5" id="about">
+      <section className="py-20 bg-white border-t border-slate-100 scroll-mt-28" id="about">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <p className="text-orange-400 text-sm uppercase tracking-widest font-semibold mb-3">
+              <p className="text-orange-600 text-sm uppercase tracking-widest font-semibold mb-3">
                 About Us
               </p>
-              <h2 className="font-display text-6xl text-white leading-none mb-6">
+              <h2 className="font-display text-6xl text-slate-900 leading-none mb-6">
                 BUILDING BRANDS
                 <br />
                 <span className="text-gradient">SINCE 2022</span>
               </h2>
-              <p className="text-gray-400 text-base leading-relaxed mb-5">
+              <p className="text-slate-600 text-base leading-relaxed mb-5">
                 Girja Enterprise Catalog is a Surat-based manufacturer
                 specialising in custom branded apparel and accessories. From a
                 small workshop in 2022, we've
                 grown into one of Gujarat's leading bulk apparel and accessories
                 manufacturers.
               </p>
-              <p className="text-gray-400 text-base leading-relaxed mb-8">
+              <p className="text-slate-600 text-base leading-relaxed mb-8">
                 Our state-of-the-art facility houses digital printing, screen
                 printing, embroidery, and stitching units under one roof —
                 ensuring quality control at every stage. We work directly with
@@ -515,15 +533,15 @@ export default function HomePage() {
               ].map((stat, i) => (
                 <div
                   key={i}
-                  className="bg-[#111] border border-white/5 rounded-2xl p-6 text-center hover:border-orange-500/20 transition-all"
+                  className="bg-slate-50 border border-slate-200/90 rounded-2xl p-6 text-center hover:border-orange-500/30 transition-all shadow-sm"
                 >
                   <div className="font-display text-5xl text-gradient mb-1">
                     {stat.num}
                   </div>
-                  <div className="text-white text-sm font-semibold">
+                  <div className="text-slate-900 text-sm font-bold">
                     {stat.label}
                   </div>
-                  <div className="text-gray-600 text-xs">{stat.sub}</div>
+                  <div className="text-slate-500 text-xs mt-0.5">{stat.sub}</div>
                 </div>
               ))}
             </div>
@@ -533,26 +551,26 @@ export default function HomePage() {
 
       {/* ===== CONTACT ===== */}
       <section
-        className="py-20 bg-[#080808] border-t border-white/5"
+        className="py-10 sm:py-14 bg-slate-50/60 border-t border-slate-100 scroll-mt-28"
         id="contact"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-14">
-            <p className="text-orange-400 text-sm uppercase tracking-widest font-semibold mb-2">
+          <div className="text-center mb-6 sm:mb-8">
+            <p className="text-orange-600 text-sm uppercase tracking-widest font-semibold mb-1.5">
               Get In Touch
             </p>
-            <h2 className="font-display text-5xl text-white">
+            <h2 className="font-display text-4xl sm:text-5xl text-slate-900">
               REQUEST A QUOTE
             </h2>
-            <p className="text-gray-500 mt-3 text-base">
+            <p className="text-slate-600 mt-2 text-sm sm:text-base">
               Fill the form below and our team will get back to you within 2
               hours.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
             {/* Contact Info */}
-            <div className="lg:col-span-2 space-y-6">
+            <div className="lg:col-span-2 space-y-5">
               {[
                 {
                   icon: MapPin,
@@ -578,15 +596,15 @@ export default function HomePage() {
                 },
               ].map((item, i) => (
                 <div key={i} className="flex gap-4">
-                  <div className="w-11 h-11 bg-orange-500/10 rounded-xl flex items-center justify-center shrink-0">
-                    <item.icon size={18} className="text-orange-400" />
+                  <div className="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center shrink-0 shadow-xs">
+                    <item.icon size={18} className="text-orange-600" />
                   </div>
                   <div>
-                    <p className="text-white text-sm font-semibold mb-0.5">
+                    <p className="text-slate-900 text-sm font-bold mb-0.5">
                       {item.title}
                     </p>
                     {item.lines.map((line, j) => (
-                      <p key={j} className="text-gray-500 text-sm">
+                      <p key={j} className="text-slate-600 text-xs sm:text-sm">
                         {line}
                       </p>
                     ))}
@@ -596,28 +614,28 @@ export default function HomePage() {
             </div>
 
             {/* Form */}
-            <div className="lg:col-span-3 bg-[#111] border border-white/5 rounded-2xl p-8">
+            <div className="lg:col-span-3 bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 shadow-md">
               {submitted ? (
                 <div className="flex flex-col items-center justify-center h-full py-12 text-center">
-                  <div className="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mb-4">
-                    <CheckCircle2 size={32} className="text-green-400" />
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                    <CheckCircle2 size={32} className="text-green-600" />
                   </div>
-                  <h3 className="text-white font-bold text-xl mb-2">
+                  <h3 className="text-slate-900 font-bold text-xl mb-2">
                     Message Sent!
                   </h3>
-                  <p className="text-gray-500 text-sm">
+                  <p className="text-slate-600 text-sm">
                     Our team will contact you within 2 hours.
                   </p>
                   <button
                     onClick={() => setSubmitted(false)}
-                    className="mt-6 text-orange-400 text-sm hover:underline"
+                    className="mt-6 text-orange-600 font-semibold text-sm hover:underline"
                   >
                     Send another message
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <form onSubmit={handleSubmit} className="space-y-3.5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     {[
                       {
                         id: "name",
@@ -645,7 +663,7 @@ export default function HomePage() {
                       },
                     ].map((field) => (
                       <div key={field.id}>
-                        <label className="block text-gray-400 text-xs uppercase tracking-wide mb-1.5">
+                        <label className="block text-slate-700 text-[11px] font-semibold uppercase tracking-wide mb-1">
                           {field.label}
                         </label>
                         <input
@@ -658,31 +676,31 @@ export default function HomePage() {
                               [field.id]: e.target.value,
                             })
                           }
-                          className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-orange-500/50 transition-colors"
+                          className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3.5 py-2.5 text-slate-900 text-sm placeholder-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 transition-colors shadow-xs"
                           placeholder={field.label}
                         />
                       </div>
                     ))}
                   </div>
                   <div>
-                    <label className="block text-gray-400 text-xs uppercase tracking-wide mb-1.5">
+                    <label className="block text-slate-700 text-[11px] font-semibold uppercase tracking-wide mb-1">
                       Message / Requirements
                     </label>
                     <textarea
-                      rows={4}
+                      rows={3}
                       required
                       value={formData.message}
                       onChange={(e) =>
                         setFormData({ ...formData, message: e.target.value })
                       }
-                      className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-orange-500/50 transition-colors resize-none"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3.5 py-2.5 text-slate-900 text-sm placeholder-slate-400 focus:bg-white focus:outline-none focus:border-orange-500 transition-colors resize-none shadow-xs"
                       placeholder="Tell us about your requirements — product type, quantity, customization needed..."
                     />
                   </div>
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-orange-500 hover:bg-orange-600 disabled:opacity-60 text-white font-semibold py-3 rounded-lg transition-all duration-200 uppercase tracking-wide text-sm"
+                    className="w-full bg-orange-500 hover:bg-orange-600 disabled:opacity-60 text-white font-semibold py-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 uppercase tracking-wide text-sm"
                   >
                     {loading ? "Sending..." : "Send Message & Get Quote"}
                   </button>

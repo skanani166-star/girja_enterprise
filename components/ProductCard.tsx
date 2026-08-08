@@ -26,9 +26,9 @@ export default function ProductCard({ product }: { product: Product }) {
 
   return (
     <Link href={`/products/${product.slug}`} className="group block h-full">
-      <div className="bg-[#111] border border-white/5 rounded-2xl overflow-hidden card-hover h-full flex flex-col">
+      <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden card-hover h-full flex flex-col shadow-sm hover:shadow-xl hover:border-orange-500/40 transition-all duration-300">
         {/* Image container */}
-        <div className="relative h-56 bg-gradient-to-br from-[#1a1a1a] to-[#222] flex items-center justify-center overflow-hidden">
+        <div className="relative h-56 bg-slate-50 flex items-center justify-center overflow-hidden border-b border-slate-100">
           <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
 
           {mainImage && !imgError ? (
@@ -43,11 +43,11 @@ export default function ProductCard({ product }: { product: Product }) {
           ) : (
             <Package
               size={64}
-              className="text-gray-700 group-hover:text-orange-500/40 transition-colors duration-300"
+              className="text-slate-300 group-hover:text-orange-500/50 transition-colors duration-300"
             />
           )}
 
-          <span className="absolute top-3 right-3 z-20 text-xs font-medium px-2.5 py-1 rounded border bg-white/10 text-gray-300 border-white/10 backdrop-blur-md capitalize">
+          <span className="absolute top-3 right-3 z-20 text-xs font-semibold px-2.5 py-1 rounded-full bg-white/90 text-slate-700 border border-slate-200/80 shadow-sm backdrop-blur-md capitalize">
             {product.category}
           </span>
         </div>
@@ -55,24 +55,24 @@ export default function ProductCard({ product }: { product: Product }) {
         {/* Content */}
         <div className="p-5 flex-1 flex flex-col justify-between">
           <div>
-            <h3 className="text-white font-semibold text-base mb-1.5 group-hover:text-orange-400 transition-colors line-clamp-1">
+            <h3 className="text-slate-900 font-bold text-base mb-1.5 group-hover:text-orange-600 transition-colors line-clamp-1">
               {product.name}
             </h3>
-            <p className="text-gray-500 text-sm line-clamp-2 mb-4 leading-relaxed">
+            <p className="text-slate-500 text-sm line-clamp-2 mb-4 leading-relaxed">
               {product.description}
             </p>
           </div>
 
-          <div className="flex items-center justify-between pt-3 border-t border-white/5 mt-auto">
+          <div className="flex items-center justify-between pt-3 border-t border-slate-100 mt-auto">
             <div>
-              <p className="text-xs text-gray-500 uppercase tracking-wide">
+              <p className="text-xs text-slate-400 uppercase tracking-wide font-medium">
                 Min Order
               </p>
-              <p className="text-white font-medium text-sm">
+              <p className="text-slate-900 font-semibold text-sm">
                 {product.minQty ? `${product.minQty} pcs` : 'Bulk Quantity'}
               </p>
             </div>
-            <div className="flex items-center gap-1 text-orange-400 text-sm font-medium group-hover:gap-2 transition-all">
+            <div className="flex items-center gap-1 text-orange-600 text-sm font-semibold group-hover:gap-2 transition-all">
               View Catalog <ArrowRight size={14} />
             </div>
           </div>
