@@ -15,6 +15,19 @@ interface Product {
   images?: string[];
 }
 
+const categoryFallbacks: Record<string, string> = {
+  tshirts: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&auto=format&fit=crop&q=80",
+  caps: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=800&auto=format&fit=crop&q=80",
+  bags: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&auto=format&fit=crop&q=80",
+};
+
+const getFallbackImage = (cat?: string) => {
+  if (cat && categoryFallbacks[cat.toLowerCase()]) {
+    return categoryFallbacks[cat.toLowerCase()];
+  }
+  return "https://images.unsplash.com/photo-1562157873-818bc0726f68?w=800&auto=format&fit=crop&q=80";
+};
+
 export default function ProductCard({ product }: { product: Product }) {
   const [imgError, setImgError] = useState(false);
 
@@ -24,6 +37,8 @@ export default function ProductCard({ product }: { product: Product }) {
       ? formatImageUrl(product.image)
       : "";
 
+  const displayImage = (!mainImage || imgError) ? getFallbackImage(product.category) : mainImage;
+
   return (
     <Link href={`/products/${product.slug}`} className="group block h-full">
       <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden card-hover h-full flex flex-col shadow-sm hover:shadow-xl hover:border-orange-500/40 transition-all duration-300">
@@ -31,21 +46,14 @@ export default function ProductCard({ product }: { product: Product }) {
         <div className="relative h-56 bg-slate-50 flex items-center justify-center overflow-hidden border-b border-slate-100">
           <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
 
-          {mainImage && !imgError ? (
-            <Image
-              src={mainImage}
-              alt={product.name}
-              fill
-              unoptimized
-              onError={() => setImgError(true)}
-              className="object-cover group-hover:scale-105 transition-transform duration-500"
-            />
-          ) : (
-            <Package
-              size={64}
-              className="text-slate-300 group-hover:text-orange-500/50 transition-colors duration-300"
-            />
-          )}
+          <Image
+            src={displayImage}
+            alt={product.name}
+            fill
+            unoptimized
+            onError={() => setImgError(true)}
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
+          />
 
           <span className="absolute top-3 right-3 z-20 text-xs font-semibold px-2.5 py-1 rounded-full bg-white/90 text-slate-700 border border-slate-200/80 shadow-sm backdrop-blur-md capitalize">
             {product.category}

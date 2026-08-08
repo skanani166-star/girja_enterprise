@@ -45,9 +45,12 @@
         "Blue",
         "Green"
       ],
-      "image": "/images/dry-fit.jpg",
+      "image": "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&auto=format&fit=crop&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=800&auto=format&fit=crop&q=80"
+      ],
       "badge": "Sports",
-      "material": "silk",
+      "material": "Poly Dry-Fit",
       "weight": "140 GSM"
     },
     {
@@ -73,7 +76,10 @@
         "Red",
         "Grey"
       ],
-      "image": "/images/baseball-cap.jpg",
+      "image": "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=800&auto=format&fit=crop&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=800&auto=format&fit=crop&q=80"
+      ],
       "badge": "Top Pick",
       "material": "Cotton Twill",
       "weight": "N/A"
@@ -100,7 +106,10 @@
         "Red/White",
         "Camo/Black"
       ],
-      "image": "/images/trucker-cap.jpg",
+      "image": "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?w=800&auto=format&fit=crop&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?w=800&auto=format&fit=crop&q=80"
+      ],
       "badge": "Summer Special",
       "material": "Foam + Mesh",
       "weight": "N/A"
@@ -127,7 +136,10 @@
         "Navy",
         "Olive"
       ],
-      "image": "/images/bucket-hat.jpg",
+      "image": "https://images.unsplash.com/photo-1575428652377-a2d80e2277fc?w=800&auto=format&fit=crop&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1575428652377-a2d80e2277fc?w=800&auto=format&fit=crop&q=80"
+      ],
       "badge": "Trending",
       "material": "Canvas / Poly",
       "weight": "N/A"
@@ -153,7 +165,10 @@
         "Grey",
         "Navy Blue"
       ],
-      "image": "/images/laptop-bag.jpg",
+      "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&auto=format&fit=crop&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&auto=format&fit=crop&q=80"
+      ],
       "badge": "Corporate Gift",
       "material": "600D Polyester",
       "weight": "800g"
@@ -180,7 +195,10 @@
         "Red",
         "Green"
       ],
-      "image": "/images/tote-bag.jpg",
+      "image": "https://images.unsplash.com/photo-1544816155-12df9643f363?w=800&auto=format&fit=crop&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1544816155-12df9643f363?w=800&auto=format&fit=crop&q=80"
+      ],
       "badge": "Eco Friendly",
       "material": "12oz Canvas",
       "weight": "350g"
@@ -205,7 +223,10 @@
         "Grey",
         "Navy"
       ],
-      "image": "/images/duffel-bag.jpg",
+      "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&auto=format&fit=crop&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&auto=format&fit=crop&q=80"
+      ],
       "badge": "Premium",
       "material": "PU + Polyester",
       "weight": "600g"

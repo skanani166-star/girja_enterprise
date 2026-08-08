@@ -99,16 +99,20 @@ export default function HomePage() {
     return () => window.removeEventListener('hashchange', handleHashScroll);
   }, []);
 
+  const [formError, setFormError] = useState("");
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setFormError("");
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-      if (res.ok) {
+      const json = await res.json();
+      if (res.ok && json.success) {
         setSubmitted(true);
         setFormData({
           name: "",
@@ -117,9 +121,14 @@ export default function HomePage() {
           company: "",
           message: "",
         });
+      } else {
+        setFormError(json.error || "Failed to submit quote request.");
       }
-    } catch {}
-    setLoading(false);
+    } catch (err) {
+      setFormError("Failed to submit quote request. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const getCategoryIcon = (iconName?: string) => {
@@ -635,6 +644,11 @@ export default function HomePage() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-3.5">
+                  {formError && (
+                    <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-xs font-semibold">
+                      {formError}
+                    </div>
+                  )}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                     {[
                       {
