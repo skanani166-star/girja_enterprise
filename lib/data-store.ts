@@ -42,7 +42,9 @@ export interface ContactEntry {
   status: string;
 }
 
-// In-Memory fallback cache across serverless requests in the same container instance
+const CLOUD_PRODUCTS_URL = process.env.CLOUD_PRODUCTS_URL || "https://jsonblob.com/api/jsonBlob/019fe055-341f-708f-9440-744e26dc6106";
+const CLOUD_CONTACTS_URL = process.env.CLOUD_CONTACTS_URL || "https://jsonblob.com/api/jsonBlob/019fe055-58fe-71ec-974b-4c50b06d2b79";
+
 let cachedProductsData: ProductsData | null = null;
 let cachedContactsData: ContactEntry[] | null = null;
 
@@ -116,28 +118,21 @@ export async function fetchProductsData(): Promise<ProductsData> {
     return kvData;
   }
 
-  // 2. Try Admin API Proxy if configured
-  const adminUrl = getAdminBaseUrl();
-  if (adminUrl) {
-    try {
-      const res = await fetch(`${adminUrl}/api/products`, { cache: "no-store" });
-      if (res.ok) {
-        const json = await res.json();
-        if (Array.isArray(json.products) && Array.isArray(json.categories)) {
-          const data: ProductsData = {
-            categories: json.categories,
-            products: json.products,
-          };
-          cachedProductsData = data;
-          return data;
-        }
+  // 2. Try Cloud JSON Blob persistence
+  try {
+    const res = await fetch(CLOUD_PRODUCTS_URL, { cache: "no-store" });
+    if (res.ok) {
+      const json = await res.json();
+      if (Array.isArray(json.products) && Array.isArray(json.categories)) {
+        cachedProductsData = json;
+        return json;
       }
-    } catch (err) {
-      console.warn("Failed to fetch products from Admin API proxy:", err);
     }
+  } catch (err) {
+    console.warn("Could not fetch products from Cloud Blob:", err);
   }
 
-  // 3. Try reading local products.json file first
+  // 3. Try reading local products.json file
   try {
     const targetPath = getProductDataPath();
     const data = JSON.parse(readFileSync(targetPath, "utf-8"));
@@ -148,10 +143,7 @@ export async function fetchProductsData(): Promise<ProductsData> {
     cachedProductsData = result;
     return result;
   } catch {
-    // 4. Return memory cache if file read fails
-    if (cachedProductsData) {
-      return cachedProductsData;
-    }
+    if (cachedProductsData) return cachedProductsData;
     return { categories: [], products: [] };
   }
 }
@@ -162,7 +154,19 @@ export async function saveProductsData(data: ProductsData): Promise<void> {
   // 1. Save to Cloud KV if available
   await kvSet("girja_products_data", data);
 
-  // 2. Try safe local FS save
+  // 2. Save to Cloud JSON Blob
+  try {
+    await fetch(CLOUD_PRODUCTS_URL, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+      cache: "no-store",
+    });
+  } catch (err) {
+    console.warn("Could not update Cloud Blob for products:", err);
+  }
+
+  // 3. Try safe local FS save
   try {
     const targetPath = getProductDataPath();
     writeFileSync(targetPath, JSON.stringify(data, null, 2));
@@ -194,21 +198,18 @@ export async function fetchContacts(): Promise<ContactEntry[]> {
     return kvData;
   }
 
-  // 2. Try Admin API proxy if configured
-  const adminUrl = getAdminBaseUrl();
-  if (adminUrl) {
-    try {
-      const res = await fetch(`${adminUrl}/api/contact`, { cache: "no-store" });
-      if (res.ok) {
-        const json = await res.json();
-        if (Array.isArray(json)) {
-          cachedContactsData = json;
-          return json;
-        }
+  // 2. Try Cloud JSON Blob
+  try {
+    const res = await fetch(CLOUD_CONTACTS_URL, { cache: "no-store" });
+    if (res.ok) {
+      const json = await res.json();
+      if (Array.isArray(json)) {
+        cachedContactsData = json;
+        return json;
       }
-    } catch (err) {
-      console.warn("Failed to fetch contacts from Admin API proxy:", err);
     }
+  } catch (err) {
+    console.warn("Could not fetch contacts from Cloud Blob:", err);
   }
 
   // 3. Try reading local contacts.json
@@ -219,9 +220,7 @@ export async function fetchContacts(): Promise<ContactEntry[]> {
     cachedContactsData = result;
     return result;
   } catch {
-    if (cachedContactsData) {
-      return cachedContactsData;
-    }
+    if (cachedContactsData) return cachedContactsData;
     return [];
   }
 }
@@ -232,7 +231,19 @@ export async function saveContacts(contacts: ContactEntry[]): Promise<void> {
   // 1. Save to Cloud KV if available
   await kvSet("girja_contacts_data", contacts);
 
-  // 2. Try safe local FS save
+  // 2. Save to Cloud JSON Blob
+  try {
+    await fetch(CLOUD_CONTACTS_URL, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(contacts),
+      cache: "no-store",
+    });
+  } catch (err) {
+    console.warn("Could not update Cloud Blob for contacts:", err);
+  }
+
+  // 3. Try safe local FS save
   for (const p of candidateContactPaths) {
     try {
       writeFileSync(p, JSON.stringify(contacts, null, 2));
