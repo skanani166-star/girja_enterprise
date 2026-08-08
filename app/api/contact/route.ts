@@ -1,12 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync } from 'fs';
 import path from 'path';
 
-const dataPath = path.join(process.cwd(), 'data', 'contacts.json');
+export const dynamic = 'force-dynamic';
+
+const candidatePaths = [
+  process.env.ADMIN_CONTACTS_PATH,
+  path.resolve(process.cwd(), '..', '..', 'girja_enterprise_admin', 'data', 'contacts.json'),
+  path.resolve(process.cwd(), '..', 'girja_enterprise_admin', 'data', 'contacts.json'),
+  path.join(process.cwd(), 'data', 'contacts.json'),
+].filter(Boolean) as string[];
+
+function getContactsPath(): string {
+  for (const p of candidatePaths) {
+    if (existsSync(p)) return p;
+  }
+  return path.join(process.cwd(), 'data', 'contacts.json');
+}
 
 function getContacts() {
   try {
-    return JSON.parse(readFileSync(dataPath, 'utf-8'));
+    const targetPath = getContactsPath();
+    return JSON.parse(readFileSync(targetPath, 'utf-8'));
   } catch {
     return [];
   }
@@ -23,7 +38,8 @@ export async function POST(req: NextRequest) {
       status: 'new',
     };
     contacts.unshift(entry);
-    writeFileSync(dataPath, JSON.stringify(contacts, null, 2));
+    const targetPath = getContactsPath();
+    writeFileSync(targetPath, JSON.stringify(contacts, null, 2));
     return NextResponse.json({ success: true });
   } catch (err) {
     return NextResponse.json({ error: 'Failed to save contact' }, { status: 500 });

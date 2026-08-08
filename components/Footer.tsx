@@ -1,6 +1,8 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
-  Zap,
   MapPin,
   Phone,
   Mail,
@@ -9,7 +11,32 @@ import {
   Twitter,
 } from "lucide-react";
 
+interface Category {
+  id: string;
+  name: string;
+  slug?: string;
+}
+
 export default function Footer() {
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const res = await fetch("/api/categories");
+        if (res.ok) {
+          const json = await res.json();
+          if (Array.isArray(json.categories)) {
+            setCategories(json.categories);
+          }
+        }
+      } catch (err) {
+        // Fallback gracefully
+      }
+    }
+    loadCategories();
+  }, []);
+
   return (
     <footer className="bg-[#080808] border-t border-white/5 pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -24,46 +51,73 @@ export default function Footer() {
                 height={100}
               />
             </Link>
-            <p className="text-gray-500 text-sm leading-relaxed">
+            <p className="text-gray-500 text-sm leading-relaxed mt-2">
               India's trusted catalog for premium corporate apparel and
               accessories since 2022. Quality you can wear, brands people
               remember.
             </p>
-            <div className="flex gap-3 mt-5">
-              {[Instagram, Linkedin, Twitter].map((Icon, i) => (
-                <a
-                  key={i}
-                  href="#"
-                  className="w-8 h-8 border border-white/10 rounded flex items-center justify-center text-gray-500 hover:text-orange-400 hover:border-orange-400/40 transition-all"
-                >
-                  <Icon size={14} />
-                </a>
-              ))}
+            <div className="flex items-center gap-3 mt-5">
+              {/* Instagram */}
+              <a
+                href="https://www.instagram.com/girjaenterprise?igsh=MWtqNXZheDRoaDA5OQ=="
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="w-9 h-9 border border-white/10 rounded-lg flex items-center justify-center text-gray-400 hover:text-pink-500 hover:border-pink-500/40 bg-white/5 hover:bg-pink-500/10 transition-all"
+              >
+                <Instagram size={18} />
+              </a>
+
+              {/* IndiaMART */}
+              <a
+                href="https://www.indiamart.com/girja-enterprise/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="IndiaMART"
+                className="h-9 px-3 border border-white/10 rounded-lg flex items-center gap-1.5 text-xs font-bold text-gray-300 hover:text-teal-400 hover:border-teal-400/40 bg-white/5 hover:bg-teal-500/10 transition-all"
+              >
+                <span className="w-2 h-2 rounded-full bg-teal-400 animate-pulse" />
+                IndiaMART
+              </a>
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Dynamic Categories */}
           <div>
             <h4 className="text-white font-semibold uppercase tracking-widest text-xs mb-4">
-              Products
+              Categories
             </h4>
             <ul className="space-y-2">
-              {[
-                "T-Shirts",
-                "Caps & Hats",
-                "Bags",
-                "Combo Kits",
-                "Accessories",
-              ].map((item) => (
-                <li key={item}>
-                  <Link
-                    href="/products"
-                    className="text-gray-500 text-sm hover:text-orange-400 transition-colors"
-                  >
-                    {item}
-                  </Link>
-                </li>
-              ))}
+              {categories.length > 0 ? (
+                categories.map((cat) => (
+                  <li key={cat.id}>
+                    <Link
+                      href={`/products?category=${cat.id}`}
+                      className="text-gray-500 text-sm hover:text-orange-400 transition-colors"
+                    >
+                      {cat.name}
+                    </Link>
+                  </li>
+                ))
+              ) : (
+                <>
+                  <li>
+                    <Link href="/products?category=tshirts" className="text-gray-500 text-sm hover:text-orange-400">
+                      T-Shirts
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/products?category=caps" className="text-gray-500 text-sm hover:text-orange-400">
+                      Caps & Hats
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/products?category=bags" className="text-gray-500 text-sm hover:text-orange-400">
+                      Bags
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
 
@@ -76,7 +130,8 @@ export default function Footer() {
               {[
                 ["About Us", "/#about"],
                 ["Our Process", "/#process"],
-                ["Clients", "/#clients"],
+                ["Clients", "/#corporate-partners"],
+                ["Reviews", "/#testimonials"],
                 ["Contact", "/#contact"],
               ].map(([item, href]) => (
                 <li key={item}>
@@ -129,7 +184,7 @@ export default function Footer() {
 
         <div className="border-t border-white/5 pt-6 flex flex-col sm:flex-row justify-between items-center gap-2">
           <p className="text-gray-600 text-xs">
-            © 2024 Girja Enterprise Catalog. All rights reserved.
+            © 2022 Girja Enterprise Catalog. All rights reserved.
           </p>
           <p className="text-gray-600 text-xs">Made with ♥ in Surat, India</p>
         </div>

@@ -6,8 +6,20 @@ import {
   saveProductsData,
 } from "@/lib/products";
 
-export async function GET() {
+export const dynamic = "force-dynamic";
+
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const category = searchParams.get("category");
   const data = getProductsData();
+
+  if (category && category !== "all") {
+    const filteredProducts = data.products.filter(
+      (p) => p.category === category
+    );
+    return NextResponse.json({ ...data, products: filteredProducts });
+  }
+
   return NextResponse.json(data);
 }
 
@@ -28,7 +40,6 @@ export async function POST(request: NextRequest) {
       name: body.name,
       slug: createSlug(body.slug || body.name, data.products.map((p) => p.slug)),
       category: body.category,
-      price: Number(body.price) || 0,
       minQty: Number(body.minQty) || 0,
       description: body.description,
       features: Array.isArray(body.features)
@@ -47,6 +58,7 @@ export async function POST(request: NextRequest) {
       material: body.material || "",
       weight: body.weight || "",
       image: body.image || "",
+      images: Array.isArray(body.images) ? body.images : body.image ? [body.image] : [],
     };
 
     data.products.unshift(product);

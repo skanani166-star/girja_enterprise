@@ -10,7 +10,6 @@ import {
   Star,
   Users,
   Package,
-  Award,
   Truck,
   Shield,
   Paintbrush,
@@ -19,17 +18,25 @@ import {
   Phone,
   Mail,
   Clock,
-  Building2,
   Shirt,
   ShoppingBag,
+  FolderOpen,
+  HardHat,
 } from "lucide-react";
+
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  icon?: string;
+}
 
 interface Product {
   id: string;
   name: string;
   slug: string;
   category: string;
-  price: number;
   minQty: number;
   description: string;
   features: string[];
@@ -37,6 +44,7 @@ interface Product {
   badge?: string;
   material: string;
   image?: string;
+  images?: string[];
 }
 
 export default function HomePage() {
@@ -50,23 +58,28 @@ export default function HomePage() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [productsLoading, setProductsLoading] = useState(true);
 
   useEffect(() => {
-    async function loadProducts() {
+    async function loadData() {
       try {
         const res = await fetch("/api/products");
-        if (!res.ok) throw new Error("Unable to load products");
+        if (!res.ok) throw new Error("Unable to load data");
         const json = await res.json();
-        setFeaturedProducts(json.products.slice(0, 3));
+        setCategories(json.categories || []);
+        setAllProducts(json.products || []);
+        setFeaturedProducts((json.products || []).slice(0, 3));
       } catch (err) {
         setFeaturedProducts([]);
+        setCategories([]);
       } finally {
         setProductsLoading(false);
       }
     }
 
-    loadProducts();
+    loadData();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -92,6 +105,25 @@ export default function HomePage() {
     setLoading(false);
   };
 
+  const getCategoryIcon = (iconName?: string) => {
+    switch (iconName?.toLowerCase()) {
+      case "shirt":
+        return Shirt;
+      case "hardhat":
+        return HardHat;
+      case "shoppingbag":
+      case "bag":
+        return ShoppingBag;
+      case "package":
+      default:
+        return FolderOpen;
+    }
+  };
+
+  const getCategoryCount = (catId: string) => {
+    return allProducts.filter((p) => p.category === catId).length;
+  };
+
   return (
     <main className="min-h-screen bg-[#0a0a0a]">
       <Navbar />
@@ -108,7 +140,7 @@ export default function HomePage() {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 border border-orange-500/30 bg-orange-500/5 rounded-full px-4 py-1.5 text-orange-400 text-sm mb-8">
               <span className="w-2 h-2 bg-orange-400 rounded-full animate-pulse" />
-              India's Premier Corporate Product Catalog
+              Your Trusted Corporate Gifting Partner
             </div>
 
             <h1 className="font-display text-7xl sm:text-8xl lg:text-9xl text-white leading-none tracking-tight mb-6">
@@ -118,9 +150,7 @@ export default function HomePage() {
             </h1>
 
             <p className="text-gray-400 text-xl max-w-2xl mb-10 leading-relaxed">
-              Premium corporate t-shirts, caps, and bags — custom branded for
-              your team, events, and giveaways. Bulk manufacturing from 10
-              pieces with pan-India delivery.
+              Your trusted partner for custom corporate branding, enterprise apparel, and promotional merchandise. Premium quality manufacturing tailored for teams, corporate events, and client giveaways with pan-India delivery.
             </p>
 
             <div className="flex flex-wrap gap-4">
@@ -164,7 +194,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ===== CATEGORIES ===== */}
+      {/* ===== DYNAMIC CATEGORIES ===== */}
       <section className="py-20 border-t border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-end justify-between mb-12">
@@ -185,71 +215,39 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              {
-                id: "tshirts",
-                icon: Shirt,
-                title: "T-Shirts",
-                desc: "Polo, round neck, dry-fit & more. 180–220 GSM options. Custom print & embroidery.",
-                count: 3,
-                color: "from-blue-500/10 to-transparent",
-                border: "border-blue-500/20 hover:border-blue-500/50",
-                iconColor: "text-blue-400",
-              },
-              {
-                id: "caps",
-                icon: Package,
-                title: "Caps & Hats",
-                desc: "Baseball caps, trucker caps, bucket hats. 3D embroidery & screen print.",
-                count: 3,
-                color: "from-green-500/10 to-transparent",
-                border: "border-green-500/20 hover:border-green-500/50",
-                iconColor: "text-green-400",
-              },
-              {
-                id: "bags",
-                icon: ShoppingBag,
-                title: "Bags",
-                desc: "Laptop bags, tote bags, duffel bags. Perfect for corporate gifting.",
-                count: 3,
-                color: "from-purple-500/10 to-transparent",
-                border: "border-purple-500/20 hover:border-purple-500/50",
-                iconColor: "text-purple-400",
-              },
-            ].map((cat) => (
-              <Link
-                key={cat.id}
-                href={`/products?category=${cat.id}`}
-                className={`group relative bg-[#111] border ${cat.border} rounded-2xl p-8 transition-all duration-300 overflow-hidden card-hover`}
-              >
-                <div
-                  className={`absolute inset-0 bg-gradient-to-br ${cat.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
-                />
-                <div className="relative">
-                  <div
-                    className={`w-14 h-14 rounded-xl bg-white/5 flex items-center justify-center mb-5 ${cat.iconColor}`}
-                  >
-                    <cat.icon size={26} />
+            {categories.slice(0, 3).map((cat) => {
+              const IconComp = getCategoryIcon(cat.icon);
+              const count = getCategoryCount(cat.id);
+
+              return (
+                <Link
+                  key={cat.id}
+                  href={`/products?category=${cat.id}`}
+                  className="group relative bg-[#111] border border-white/10 hover:border-orange-500/50 rounded-2xl p-8 transition-all duration-300 overflow-hidden card-hover"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="relative">
+                    <div className="w-14 h-14 rounded-xl bg-white/5 flex items-center justify-center mb-5 text-orange-400 group-hover:bg-orange-500 group-hover:text-white transition-all">
+                      <IconComp size={26} />
+                    </div>
+                    <h3 className="text-white font-bold text-xl mb-2">
+                      {cat.name}
+                    </h3>
+                    <p className="text-gray-500 text-sm leading-relaxed mb-5 line-clamp-2">
+                      {cat.description || "Browse custom products in this category."}
+                    </p>
+                    <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                      <span className="text-gray-600 text-xs">
+                        {count} product{count !== 1 ? "s" : ""}
+                      </span>
+                      <span className="text-orange-400 flex items-center gap-1 text-sm font-medium group-hover:translate-x-1 transition-transform">
+                        Explore <ChevronRight size={14} />
+                      </span>
+                    </div>
                   </div>
-                  <h3 className="text-white font-bold text-xl mb-2">
-                    {cat.title}
-                  </h3>
-                  <p className="text-gray-500 text-sm leading-relaxed mb-5">
-                    {cat.desc}
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600 text-xs">
-                      {cat.count} products
-                    </span>
-                    <span
-                      className={`${cat.iconColor} flex items-center gap-1 text-sm font-medium`}
-                    >
-                      Explore <ChevronRight size={14} />
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -277,7 +275,7 @@ export default function HomePage() {
             <div className="text-gray-500 text-center py-16">Loading featured products...</div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {featuredProducts.map((product) => (
+              {featuredProducts.slice(0, 3).map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
@@ -339,8 +337,56 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ===== OUR VALUED CLIENTS / CORPORATE PARTNERS ===== */}
+      <section className="py-16 border-t border-white/5 bg-[#0a0a0a] overflow-hidden" id="corporate-partners">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-10 text-center">
+          <p className="text-orange-400 text-sm uppercase tracking-widest font-semibold mb-2">
+            Corporate Partners
+          </p>
+          <h2 className="font-display text-4xl sm:text-5xl text-white">
+            OUR VALUED CLIENTS
+          </h2>
+        </div>
+
+        {/* Continuous Horizontal Marquee Container */}
+        <div className="w-full relative overflow-hidden py-4 before:absolute before:left-0 before:top-0 before:z-10 before:h-full before:w-12 sm:before:w-28 before:bg-gradient-to-r before:from-[#0a0a0a] before:to-transparent after:absolute after:right-0 after:top-0 after:z-10 after:h-full after:w-12 sm:after:w-28 after:bg-gradient-to-l after:from-[#0a0a0a] after:to-transparent">
+          <div className="flex w-max animate-marquee gap-5 hover:[animation-play-state:paused]">
+            {[
+              { name: "KRIBHCO", src: "/kribhco.png" },
+              { name: "AM/NS India", src: "/amns_india.png" },
+              { name: "Hetero", src: "/hetero.png" },
+              { name: "SBI Bank", src: "/sbi.png" },
+              { name: "Syncom Formulations", src: "/syncom.png" },
+              { name: "BJP", src: "/bjp.png" },
+              { name: "Cellforce Power", src: "/cellforce.png" },
+              { name: "Greenedge Energy", src: "/greenedge.png" },
+              // Duplicate loop for seamless infinite animation
+              { name: "KRIBHCO", src: "/kribhco.png" },
+              { name: "AM/NS India", src: "/amns_india.png" },
+              { name: "Hetero", src: "/hetero.png" },
+              { name: "SBI Bank", src: "/sbi.png" },
+              { name: "Syncom Formulations", src: "/syncom.png" },
+              { name: "BJP", src: "/bjp.png" },
+              { name: "Cellforce Power", src: "/cellforce.png" },
+              { name: "Greenedge Energy", src: "/greenedge.png" },
+            ].map((client, idx) => (
+              <div
+                key={idx}
+                className="bg-white border border-white/10 rounded-2xl p-3 sm:p-4 flex items-center justify-center text-center group transition-all duration-300 card-hover h-28 sm:h-32 w-56 sm:w-72 shrink-0 shadow-lg overflow-hidden"
+              >
+                <img
+                  src={client.src}
+                  alt={client.name}
+                  className="w-full h-full object-contain my-auto group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ===== CLIENT LOGOS / TESTIMONIAL ===== */}
-      <section className="py-20 bg-[#080808]" id="clients">
+      <section className="py-20 bg-[#080808]" id="testimonials">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-14">
             <p className="text-orange-400 text-sm uppercase tracking-widest font-semibold mb-2">
@@ -351,52 +397,75 @@ export default function HomePage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               {
-                name: "Rahul Mehta",
-                role: "HR Manager, TechCorp India",
-                text: "Girja Enterprise delivered 2000 polo t-shirts for our annual meet. Quality was top-notch and delivery was on time. Will order again!",
+                name: "Ghanshyam Patel",
+                location: "Surat, Gujarat",
+                dateProduct: "01-August-25 | Product Name : Cotton Caps",
+                text: "Excellent polo T-shirt with premium fabric and perfect fit. Very comfortable for daily wear and looks smart. I customized it with my logo and the print quality is superb, durable, and long-lasting. Great choice for corporate and casual use!",
                 rating: 5,
+                badges: ["Response 👍", "Quality 👍", "Delivery 👍"],
               },
               {
-                name: "Priya Shah",
-                role: "Marketing Head, RetailCo",
-                text: "We ordered custom caps for our 500-member sales team. The embroidery quality exceeded our expectations. Great value for money.",
+                name: "Hardik",
+                location: "Surat, Gujarat",
+                dateProduct: "23-February-26 | Product Name : Men Custom T-Shirt",
+                text: "We got customized cotton printed T-shirts made from Girja Enterprise. The fabric quality is excellent, and the printing is durable and long-lasting. Highly recommended for anyone looking for high-quality customized T-shirt printing.",
                 rating: 5,
+                badges: ["Response 👍", "Quality 👍", "Delivery 👍"],
               },
               {
-                name: "Amit Desai",
-                role: "Founder, StartupHub",
-                text: "Ordered branded tote bags and t-shirts for our event. The turnaround time was amazing and the print quality was excellent.",
+                name: "Rajesh Sharma",
+                location: "Surat, Gujarat",
+                dateProduct: "15-January-26 | Product Name : Corporate Polos & Bags",
+                text: "Ordered bulk corporate polo T-shirts and promotional bags for our office team in Surat. Fantastic fabric quality, quick delivery, and professional logo printing. Highly recommended manufacturer!",
                 rating: 5,
+                badges: ["Response 👍", "Quality 👍", "Delivery 👍"],
               },
             ].map((t, i) => (
               <div
                 key={i}
-                className="bg-[#111] border border-white/5 rounded-2xl p-6"
+                className="bg-[#111] border border-white/5 rounded-2xl p-6 flex flex-col justify-between hover:border-orange-500/30 transition-all duration-300"
               >
-                <div className="flex gap-1 mb-4">
-                  {Array.from({ length: t.rating }).map((_, j) => (
-                    <Star
-                      key={j}
-                      size={14}
-                      className="text-orange-400"
-                      fill="#f97316"
-                    />
-                  ))}
-                </div>
-                <p className="text-gray-400 text-sm leading-relaxed mb-5">
-                  "{t.text}"
-                </p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-400 font-bold text-sm">
-                    {t.name[0]}
+                <div>
+                  <div className="flex items-center justify-between gap-3 mb-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-teal-600/30 border border-teal-500/40 flex items-center justify-center text-teal-400 font-bold text-sm shrink-0">
+                        {t.name[0]}
+                      </div>
+                      <div>
+                        <p className="text-white text-sm font-semibold flex items-center gap-1.5">
+                          {t.name}
+                          <span className="text-gray-500 font-normal text-xs">| {t.location}</span>
+                        </p>
+                        <div className="flex gap-0.5 mt-0.5">
+                          {Array.from({ length: t.rating }).map((_, j) => (
+                            <Star
+                              key={j}
+                              size={12}
+                              className="text-amber-400"
+                              fill="#f59e0b"
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-white text-sm font-semibold">{t.name}</p>
-                    <p className="text-gray-600 text-xs">{t.role}</p>
+
+                  <p className="text-xs text-gray-500 mb-3">{t.dateProduct}</p>
+
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {t.badges.map((badge, bIdx) => (
+                      <span key={bIdx} className="text-[11px] font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded">
+                        {badge}
+                      </span>
+                    ))}
                   </div>
+
+                  <p className="text-gray-300 text-sm leading-relaxed mb-4">
+                    "{t.text}"
+                  </p>
                 </div>
               </div>
             ))}
@@ -431,7 +500,6 @@ export default function HomePage() {
                 Fortune 500 companies, startups, NGOs, and event agencies across
                 India.
               </p>
-
             </div>
 
             <div className="grid grid-cols-2 gap-4">

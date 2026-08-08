@@ -45,13 +45,13 @@ export async function PUT(
       description: body.description || existing.description,
       features: Array.isArray(body.features)
         ? body.features
-        : String(body.features || existing.features.join(","))
+        : String(body.features || (existing.features || []).join(","))
             .split(",")
             .map((item) => item.trim())
             .filter(Boolean),
       colors: Array.isArray(body.colors)
         ? body.colors
-        : String(body.colors || existing.colors.join(","))
+        : String(body.colors || (existing.colors || []).join(","))
             .split(",")
             .map((item) => item.trim())
             .filter(Boolean),

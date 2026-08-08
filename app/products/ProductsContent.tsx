@@ -9,6 +9,7 @@ import { Search, SlidersHorizontal } from "lucide-react";
 interface ProductCategory {
   id: string;
   name: string;
+  slug?: string;
 }
 
 interface ProductsData {
@@ -47,17 +48,20 @@ export default function ProductsContent() {
     loadProducts();
   }, []);
 
-  const categories = [
+  const categories: { id: string; label: string; slug?: string }[] = [
     { id: "all", label: "All Products" },
-    ...data.categories.map((c) => ({ id: c.id, label: c.name })),
+    ...data.categories.map((c) => ({ id: c.id, label: c.name, slug: c.slug })),
   ];
 
   const filtered = data.products.filter((p) => {
     const matchCat =
-      selectedCategory === "all" || p.category === selectedCategory;
+      selectedCategory === "all" ||
+      p.category === selectedCategory ||
+      categories.find((c) => c.id === selectedCategory)?.slug === p.category;
+
     const matchSearch =
-      p.name.toLowerCase().includes(search.toLowerCase()) ||
-      p.description.toLowerCase().includes(search.toLowerCase());
+      (p.name || "").toLowerCase().includes(search.toLowerCase()) ||
+      (p.description || "").toLowerCase().includes(search.toLowerCase());
     return matchCat && matchSearch;
   });
 
@@ -77,7 +81,7 @@ export default function ProductsContent() {
           </h1>
           <p className="text-gray-500 text-base max-w-xl">
             Browse our full range of corporate products. Click any product to
-            see details, pricing, and customization options.
+            view detailed specifications and send a bulk order enquiry.
           </p>
         </div>
       </section>
