@@ -7,26 +7,32 @@ import {
 } from "@/lib/products";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const category = searchParams.get("category");
-  const data = getProductsData();
+  const data = await getProductsData();
 
+  let products = data.products || [];
   if (category && category !== "all") {
-    const filteredProducts = data.products.filter(
-      (p) => p.category === category
-    );
-    return NextResponse.json({ ...data, products: filteredProducts });
+    products = products.filter((p) => p.category === category);
   }
 
-  return NextResponse.json(data);
+  return NextResponse.json(
+    { ...data, products },
+    {
+      headers: {
+        "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+      },
+    }
+  );
 }
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const data = getProductsData();
+    const data = await getProductsData();
 
     if (!body.name || !body.category || !body.description) {
       return NextResponse.json(
@@ -62,7 +68,7 @@ export async function POST(request: NextRequest) {
     };
 
     data.products.unshift(product);
-    saveProductsData(data);
+    await saveProductsData(data);
 
     return NextResponse.json({ success: true, product });
   } catch (err) {

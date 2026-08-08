@@ -5,16 +5,23 @@ import {
   saveProductsData,
 } from "@/lib/products";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const data = getProductsData();
-  const product = data.products.find((item) => item.id === params.id);
+  const data = await getProductsData();
+  const product = data.products.find((item) => item.id === params.id || item.slug === params.id);
   if (!product) {
     return NextResponse.json({ error: "Product not found" }, { status: 404 });
   }
-  return NextResponse.json(product);
+  return NextResponse.json(product, {
+    headers: {
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+    },
+  });
 }
 
 export async function PUT(
@@ -23,7 +30,7 @@ export async function PUT(
 ) {
   try {
     const body = await request.json();
-    const data = getProductsData();
+    const data = await getProductsData();
     const index = data.products.findIndex((item) => item.id === params.id);
     if (index === -1) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
@@ -62,7 +69,7 @@ export async function PUT(
     };
 
     data.products[index] = updated;
-    saveProductsData(data);
+    await saveProductsData(data);
 
     return NextResponse.json({ success: true, product: updated });
   } catch {
@@ -77,14 +84,14 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const data = getProductsData();
+  const data = await getProductsData();
   const index = data.products.findIndex((item) => item.id === params.id);
   if (index === -1) {
     return NextResponse.json({ error: "Product not found" }, { status: 404 });
   }
 
   data.products.splice(index, 1);
-  saveProductsData(data);
+  await saveProductsData(data);
 
   return NextResponse.json({ success: true });
 }

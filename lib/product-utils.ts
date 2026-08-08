@@ -3,7 +3,7 @@ export interface Category {
   name: string;
   slug: string;
   description: string;
-  icon: string;
+  icon?: string;
 }
 
 export interface Product {
@@ -30,7 +30,7 @@ export interface ProductsData {
 
 export function formatImageUrl(url?: string): string {
   if (!url) return '';
-  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+  if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:image/')) return url;
   if (url.startsWith('/uploads/')) return `/api/uploads/${url.replace('/uploads/', '')}`;
   if (url.startsWith('uploads/')) return `/api/uploads/${url.replace('uploads/', '')}`;
   return url;

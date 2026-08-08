@@ -1,34 +1,16 @@
-import { readFileSync, writeFileSync, existsSync } from "fs";
-import path from "path";
 import crypto from "crypto";
 import { Product, ProductsData, formatImageUrl, slugify } from "./product-utils";
+import { fetchProductsData, saveProductsData as saveToStore, getProductDataPath } from "./data-store";
 
 export * from "./product-utils";
+export { getProductDataPath as getDataPath };
 
-const candidatePaths = [
-  process.env.ADMIN_DATA_PATH,
-  path.resolve(process.cwd(), "..", "girja_enterprise_admin", "data", "products.json"),
-  path.resolve(process.cwd(), "data", "products.json"),
-].filter(Boolean) as string[];
-
-export function getDataPath(): string {
-  for (const p of candidatePaths) {
-    if (existsSync(p)) return p;
-  }
-  return path.join(process.cwd(), "data", "products.json");
-}
-
-export function getProductsData(): ProductsData {
-  try {
-    const targetPath = getDataPath();
-    const data = JSON.parse(readFileSync(targetPath, "utf-8"));
-    return {
-      categories: Array.isArray(data.categories) ? data.categories : [],
-      products: Array.isArray(data.products) ? data.products.map(normalizeProduct) : [],
-    };
-  } catch {
-    return { categories: [], products: [] };
-  }
+export async function getProductsData(): Promise<ProductsData> {
+  const data = await fetchProductsData();
+  return {
+    categories: Array.isArray(data.categories) ? data.categories : [],
+    products: Array.isArray(data.products) ? data.products.map(normalizeProduct) : [],
+  };
 }
 
 export function normalizeProduct(p: any): Product {
@@ -53,9 +35,8 @@ export function normalizeProduct(p: any): Product {
   };
 }
 
-export function saveProductsData(data: ProductsData): void {
-  const targetPath = getDataPath();
-  writeFileSync(targetPath, JSON.stringify(data, null, 2));
+export async function saveProductsData(data: ProductsData): Promise<void> {
+  await saveToStore(data);
 }
 
 export function createSlug(text: string, existingSlugs: string[] = []): string {
