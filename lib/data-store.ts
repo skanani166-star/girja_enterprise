@@ -111,6 +111,17 @@ export function getProductDataPath(): string {
 }
 
 export async function fetchProductsData(): Promise<ProductsData> {
+  // If memory cache already has valid products, prefer memory cache for speed & reliability
+  if (cachedProductsData && Array.isArray(cachedProductsData.products) && cachedProductsData.products.length > 0) {
+    // Background refresh from cloud/KV
+    kvGet<ProductsData>("girja_products_data").then(kvData => {
+      if (kvData && Array.isArray(kvData.products) && kvData.products.length >= (cachedProductsData?.products.length || 0)) {
+        cachedProductsData = kvData;
+      }
+    }).catch(() => {});
+    return cachedProductsData;
+  }
+
   // 1. Try Cloud KV if configured
   const kvData = await kvGet<ProductsData>("girja_products_data");
   if (kvData && Array.isArray(kvData.products) && Array.isArray(kvData.categories)) {
