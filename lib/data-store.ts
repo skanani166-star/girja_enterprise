@@ -125,24 +125,52 @@ export async function fetchProductsData(): Promise<ProductsData> {
       const json = await res.json();
       const data = json.data || json;
       if (Array.isArray(data.products) && Array.isArray(data.categories)) {
-        cachedProductsData = data;
-        return data;
+        if (data.products.length > 0 || !cachedProductsData || cachedProductsData.products.length === 0) {
+          cachedProductsData = data;
+          return data;
+        }
       }
     }
   } catch (err) {
     console.warn("Could not fetch products from Cloud Storage:", err);
   }
 
-  // 3. Try reading local products.json file
+  // 3. Try fetching directly from Admin API Endpoint if configured
+  const adminUrl = getAdminBaseUrl();
+  if (adminUrl) {
+    try {
+      const adminRes = await fetch(`${adminUrl}/api/products`, { cache: "no-store" });
+      if (adminRes.ok) {
+        const adminData = await adminRes.json();
+        if (Array.isArray(adminData.products) && Array.isArray(adminData.categories)) {
+          const result: ProductsData = {
+            categories: adminData.categories,
+            products: adminData.products,
+          };
+          if (result.products.length > 0 || !cachedProductsData) {
+            cachedProductsData = result;
+          }
+          return cachedProductsData || result;
+        }
+      }
+    } catch (err) {
+      console.warn("Could not fetch products from Admin API directly:", err);
+    }
+  }
+
+  // 4. Try reading local products.json file
   try {
     const targetPath = getProductDataPath();
-    const data = JSON.parse(readFileSync(targetPath, "utf-8"));
+    const fileContent = readFileSync(targetPath, "utf-8");
+    const data = JSON.parse(fileContent);
     const result: ProductsData = {
       categories: Array.isArray(data.categories) ? data.categories : [],
       products: Array.isArray(data.products) ? data.products : [],
     };
-    cachedProductsData = result;
-    return result;
+    if (result.products.length > 0 || !cachedProductsData) {
+      cachedProductsData = result;
+    }
+    return cachedProductsData || result;
   } catch {
     if (cachedProductsData) return cachedProductsData;
     return { categories: [], products: [] };

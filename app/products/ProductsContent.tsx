@@ -54,10 +54,18 @@ export default function ProductsContent() {
   ];
 
   const filtered = data.products.filter((p) => {
+    const activeCatObj = categories.find((c) => c.id === selectedCategory);
+    const selectedSlug = activeCatObj?.slug || selectedCategory;
+
+    const normProductCat = (p.category || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+    const normSelectedId = selectedCategory.toLowerCase().replace(/[^a-z0-9]/g, "");
+    const normSelectedSlug = selectedSlug.toLowerCase().replace(/[^a-z0-9]/g, "");
+
     const matchCat =
       selectedCategory === "all" ||
       p.category === selectedCategory ||
-      categories.find((c) => c.id === selectedCategory)?.slug === p.category;
+      normProductCat === normSelectedId ||
+      normProductCat === normSelectedSlug;
 
     const matchSearch =
       (p.name || "").toLowerCase().includes(search.toLowerCase()) ||
