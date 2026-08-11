@@ -127,19 +127,6 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
             <h1 className="font-display text-5xl text-slate-900 leading-none mb-4">{product.name.toUpperCase()}</h1>
             <p className="text-slate-600 text-base leading-relaxed mb-6 whitespace-pre-line">{product.description}</p>
 
-            {/* Minimum Quantity & Bulk Notice */}
-            <div className="bg-orange-50/80 border border-orange-200/80 rounded-xl p-4 mb-8 shadow-xs">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-orange-800 font-bold text-sm uppercase tracking-wide">Bulk Manufacturing</p>
-                  <p className="text-slate-700 text-xs mt-0.5">Minimum Order Quantity: <strong className="text-slate-900 font-bold">{product.minQty || 10} pcs</strong></p>
-                </div>
-                <span className="text-xs bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-semibold">
-                  Custom Logo Ready
-                </span>
-              </div>
-            </div>
-
             {/* Product Specs */}
             <div className="grid grid-cols-2 gap-3">
               {[
