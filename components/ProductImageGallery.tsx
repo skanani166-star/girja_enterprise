@@ -83,7 +83,7 @@ export default function ProductImageGallery({
             fill
             unoptimized
             priority
-            className="object-cover transition-all duration-300 group-hover:scale-105"
+            className="object-contain p-4 transition-all duration-300 group-hover:scale-105"
             onClick={() => setIsLightboxOpen(true)}
           />
         ) : (
@@ -159,7 +159,7 @@ export default function ProductImageGallery({
                   fill
                   unoptimized
                   onError={() => handleImgError(index)}
-                  className="object-cover"
+                  className="object-contain p-1"
                 />
               ) : (
                 <div className="w-full h-full bg-slate-100 flex items-center justify-center text-slate-400">
