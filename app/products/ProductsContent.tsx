@@ -34,7 +34,7 @@ export default function ProductsContent() {
     async function loadProducts() {
       setLoading(true);
       try {
-        const res = await fetch("/api/products");
+        const res = await fetch(`/api/products?t=${Date.now()}`, { cache: "no-store" });
         if (!res.ok) throw new Error("Failed to load products");
         const json = await res.json();
         setData(json);

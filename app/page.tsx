@@ -66,7 +66,7 @@ export default function HomePage() {
   useEffect(() => {
     async function loadData() {
       try {
-        const res = await fetch("/api/products");
+        const res = await fetch(`/api/products?t=${Date.now()}`, { cache: "no-store" });
         if (!res.ok) throw new Error("Unable to load data");
         const json = await res.json();
         setCategories(json.categories || []);

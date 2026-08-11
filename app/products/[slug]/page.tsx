@@ -33,7 +33,7 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
   useEffect(() => {
     async function loadProduct() {
       try {
-        const res = await fetch('/api/products');
+        const res = await fetch(`/api/products?t=${Date.now()}`, { cache: "no-store" });
         if (!res.ok) throw new Error('Failed to load product');
         const json = await res.json();
         setCategories(json.categories || []);
