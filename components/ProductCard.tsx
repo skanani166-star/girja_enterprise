@@ -66,7 +66,7 @@ export default function ProductCard({ product }: { product: Product }) {
             <h3 className="text-slate-900 font-bold text-base mb-1.5 group-hover:text-orange-600 transition-colors line-clamp-1">
               {product.name}
             </h3>
-            <p className="text-slate-500 text-sm line-clamp-2 mb-4 leading-relaxed">
+            <p className="text-slate-500 text-sm line-clamp-2 mb-4 leading-relaxed whitespace-pre-line">
               {product.description}
             </p>
           </div>

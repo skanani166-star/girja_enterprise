@@ -125,7 +125,7 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
             </div>
 
             <h1 className="font-display text-5xl text-slate-900 leading-none mb-4">{product.name.toUpperCase()}</h1>
-            <p className="text-slate-600 text-base leading-relaxed mb-6">{product.description}</p>
+            <p className="text-slate-600 text-base leading-relaxed mb-6 whitespace-pre-line">{product.description}</p>
 
             {/* Minimum Quantity & Bulk Notice */}
             <div className="bg-orange-50/80 border border-orange-200/80 rounded-xl p-4 mb-8 shadow-xs">
