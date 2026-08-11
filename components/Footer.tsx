@@ -57,19 +57,26 @@ export default function Footer() {
               accessories since 2022. Quality you can wear, brands people
               remember.
             </p>
-            <div className="flex items-center gap-3 mt-5 flex-wrap">
+          </div>
+
+          {/* Find Us On / Marketplaces */}
+          <div>
+            <h4 className="text-slate-900 font-bold uppercase tracking-widest text-xs mb-4">
+              Find Us On
+            </h4>
+            <div className="flex flex-col gap-3">
               {/* Instagram Image Logo */}
               <a
                 href="https://www.instagram.com/girjaenterprise?igsh=MWtqNXZheDRoaDA5OQ=="
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
-                className="h-12 w-36 sm:w-40 px-3 border border-slate-200/90 rounded-2xl flex items-center justify-center bg-white hover:bg-slate-50 hover:border-slate-300 shadow-xs hover:shadow-md transition-all shrink-0"
+                className="h-12 w-44 px-4 border border-slate-200 rounded-2xl flex items-center justify-center bg-white hover:bg-slate-50 hover:border-orange-500/50 shadow-xs hover:shadow-md transition-all"
               >
                 <img
                   src="/instagram.png"
                   alt="Instagram"
-                  className="h-7 w-auto object-contain max-w-[85%]"
+                  className="h-7 w-auto object-contain max-w-[90%]"
                 />
               </a>
 
@@ -79,54 +86,15 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="IndiaMART"
-                className="h-12 w-36 sm:w-40 px-3 border border-slate-200/90 rounded-2xl flex items-center justify-center bg-white hover:bg-slate-50 hover:border-slate-300 shadow-xs hover:shadow-md transition-all shrink-0"
+                className="h-12 w-44 px-4 border border-slate-200 rounded-2xl flex items-center justify-center bg-white hover:bg-slate-50 hover:border-orange-500/50 shadow-xs hover:shadow-md transition-all"
               >
                 <img
                   src="/indiamart.png"
                   alt="IndiaMART"
-                  className="h-7 w-auto object-contain max-w-[85%]"
+                  className="h-7 w-auto object-contain max-w-[90%]"
                 />
               </a>
             </div>
-          </div>
-
-          {/* Dynamic Categories */}
-          <div>
-            <h4 className="text-slate-900 font-bold uppercase tracking-widest text-xs mb-4">
-              Categories
-            </h4>
-            <ul className="space-y-2">
-              {categories.length > 0 ? (
-                categories.map((cat) => (
-                  <li key={cat.id}>
-                    <Link
-                      href={`/products?category=${cat.id}`}
-                      className="text-slate-600 text-sm hover:text-orange-600 transition-colors"
-                    >
-                      {cat.name}
-                    </Link>
-                  </li>
-                ))
-              ) : (
-                <>
-                  <li>
-                    <Link href="/products?category=tshirts" className="text-slate-600 text-sm hover:text-orange-600">
-                      T-Shirts
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/products?category=caps" className="text-slate-600 text-sm hover:text-orange-600">
-                      Caps & Hats
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/products?category=bags" className="text-slate-600 text-sm hover:text-orange-600">
-                      Bags
-                    </Link>
-                  </li>
-                </>
-              )}
-            </ul>
           </div>
 
           {/* Company */}
