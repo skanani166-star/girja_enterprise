@@ -54,10 +54,6 @@ export default function ProductCard({ product }: { product: Product }) {
             onError={() => setImgError(true)}
             className="object-contain p-3 group-hover:scale-105 transition-transform duration-500"
           />
-
-          <span className="absolute top-3 right-3 z-20 text-xs font-semibold px-2.5 py-1 rounded-full bg-white/90 text-slate-700 border border-slate-200/80 shadow-sm backdrop-blur-md capitalize">
-            {product.category}
-          </span>
         </div>
 
         {/* Content */}
